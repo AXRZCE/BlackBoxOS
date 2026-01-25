@@ -274,3 +274,152 @@
     animation: none;
   }
 }
+
+/* MODE SYSTEM CSS Variables */
+[data-mode="stealth"] {
+  --hud-opacity: 0.15;
+  --hud-line-opacity: 0.08;
+  --hud-corner-size: 12px;
+  --glitch-intensity: 0;
+  --terminal-speed: 0ms;
+  --cursor-trail: 0;
+}
+
+[data-mode="overdrive"] {
+  --hud-opacity: 0.4;
+  --hud-line-opacity: 0.15;
+  --hud-corner-size: 16px;
+  --glitch-intensity: 1;
+  --terminal-speed: 25ms;
+  --cursor-trail: 1;
+}
+
+/* HUD Overlay Styles */
+.hud-overlay {
+  pointer-events: none;
+  z-index: 100;
+}
+
+.hud-corner {
+  position: absolute;
+  width: var(--hud-corner-size, 12px);
+  height: var(--hud-corner-size, 12px);
+  border-color: var(--accent);
+  opacity: var(--hud-opacity, 0.15);
+  transition: opacity 300ms ease-out;
+}
+
+.hud-corner-tl {
+  top: 16px;
+  left: 16px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+
+.hud-corner-tr {
+  top: 16px;
+  right: 16px;
+  border-top: 2px solid;
+  border-right: 2px solid;
+}
+
+.hud-corner-bl {
+  bottom: 16px;
+  left: 16px;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+}
+
+.hud-corner-br {
+  bottom: 16px;
+  right: 16px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
+.hud-grid-line {
+  position: absolute;
+  background: var(--accent);
+  opacity: var(--hud-line-opacity, 0.08);
+  transition: opacity 300ms ease-out;
+}
+
+.hud-grid-h {
+  height: 1px;
+  left: 0;
+  right: 0;
+}
+
+.hud-grid-v {
+  width: 1px;
+  top: 0;
+  bottom: 0;
+}
+
+.hud-flash {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 80ms ease-out;
+}
+
+.hud-flash.active {
+  opacity: 0.08;
+}
+
+/* Glitch keyframes */
+@keyframes glitch-jitter {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-2px, 1px);
+  }
+  40% {
+    transform: translate(2px, -1px);
+  }
+  60% {
+    transform: translate(-1px, -1px);
+  }
+  80% {
+    transform: translate(1px, 1px);
+  }
+}
+
+@keyframes glitch-scanline {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 -100%;
+  }
+}
+
+.glitch-active {
+  animation: glitch-jitter 120ms steps(4) infinite;
+}
+
+.glitch-scanline {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(255, 255, 255, 0.03) 2px,
+    rgba(255, 255, 255, 0.03) 4px
+  );
+  animation: glitch-scanline 100ms linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch-active,
+  .glitch-scanline {
+    animation: none;
+  }
+  .hud-corner,
+  .hud-grid-line,
+  .hud-flash {
+    transition: none;
+  }
+}

@@ -29,7 +29,13 @@ export type TelemetryEvent =
   | { type: 'heist_unlocked'; source: 'command' | 'lock_break' }
   // Labs events
   | { type: 'labs_open' }
-  | { type: 'lab_used'; name: string };
+  | { type: 'lab_used'; name: string }
+  // Mode events (M5)
+  | { type: 'mode_change'; mode: 'stealth' | 'overdrive' }
+  | { type: 'overdrive_unlocked'; source: 'command' | 'hero' }
+  // Transition events (M5)
+  | { type: 'target_lock'; project_id: string }
+  | { type: 'casefile_open'; project_id: string };
 
 // Internal event queue for batching (optional future enhancement)
 const eventQueue: TelemetryEvent[] = [];

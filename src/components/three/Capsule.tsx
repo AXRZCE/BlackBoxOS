@@ -7,6 +7,10 @@ import { Vector3 } from 'three';
 import type { Group } from 'three';
 import type { Project } from '@/data/projects';
 import { useVaultStore } from '@/lib/store';
+import { useModeStore } from '@/lib/mode-store';
+import { track } from '@/lib/telemetry';
+import { terminalLog, LOG_MESSAGES } from '@/lib/terminal';
+import { shouldTween } from '@/lib/motion';
 
 interface CapsuleProps {
   project: Project;
@@ -58,8 +62,33 @@ export function Capsule({ project, position, rotation }: CapsuleProps) {
     document.body.style.cursor = 'auto';
   };
 
+  // Mode store for transitions
+  const startTransition = useModeStore((s) => s.startTransition);
+  const triggerGlitch = useModeStore((s) => s.triggerGlitch);
+  const triggerHudFlash = useModeStore((s) => s.triggerHudFlash);
+
   const handleClick = () => {
-    setSelectedProjectId(project.id);
+    // Track target lock
+    track({ type: 'target_lock', project_id: project.id });
+    terminalLog(LOG_MESSAGES.target_lock(project.id), 'info');
+
+    // If we should animate transitions, use cinematic transition
+    if (shouldTween()) {
+      startTransition(project.id);
+      triggerGlitch(150);
+
+      // After transition delay, select and flash
+      setTimeout(() => {
+        setSelectedProjectId(project.id);
+        triggerHudFlash(200);
+        track({ type: 'casefile_open', project_id: project.id });
+        terminalLog(LOG_MESSAGES.casefile_open(project.id), 'success');
+      }, 400);
+    } else {
+      // Instant selection for reduced motion
+      setSelectedProjectId(project.id);
+      track({ type: 'casefile_open', project_id: project.id });
+    }
   };
 
   // Determine colors based on state

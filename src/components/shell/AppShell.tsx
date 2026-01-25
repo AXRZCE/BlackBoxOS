@@ -2,6 +2,11 @@
 
 import { TopBar } from './TopBar';
 import { StatusBar } from './StatusBar';
+import { HudOverlay } from './HudOverlay';
+import { GlitchLayer } from './GlitchLayer';
+import { TerminalOverlay } from './TerminalOverlay';
+import { WeaponCursor } from './WeaponCursor';
+import { HeroMoment } from './HeroMoment';
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -15,6 +20,13 @@ export function AppShell({ children }: AppShellProps) {
         {children}
       </main>
       <StatusBar />
+
+      {/* M5 Overlays */}
+      <HudOverlay />
+      <GlitchLayer />
+      <TerminalOverlay />
+      <WeaponCursor />
+      <HeroMoment />
     </div>
   );
 }

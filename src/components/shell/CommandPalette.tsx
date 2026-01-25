@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/command';
 import { useVaultStore } from '@/lib/store';
 import { useThemeStore } from '@/lib/theme-store';
+import { useModeStore } from '@/lib/mode-store';
 import { projects } from '@/data/projects';
 import { track } from '@/lib/telemetry';
 
@@ -30,6 +31,14 @@ export function CommandPalette() {
   const setTheme = useThemeStore((s) => s.setTheme);
   const toggleTheme = useThemeStore((s) => s.toggleTheme);
   const unlockHeist = useThemeStore((s) => s.unlockHeist);
+
+  // Mode state
+  const mode = useModeStore((s) => s.mode);
+  const overdriveUnlocked = useModeStore((s) => s.overdriveUnlocked);
+  const setMode = useModeStore((s) => s.setMode);
+  const toggleMode = useModeStore((s) => s.toggleMode);
+  const unlockOverdrive = useModeStore((s) => s.unlockOverdrive);
+  const triggerGlitch = useModeStore((s) => s.triggerGlitch);
 
   // Track open/close
   useEffect(() => {
@@ -102,13 +111,38 @@ export function CommandPalette() {
     setOpen(false);
   };
 
-  // Hidden heist unlock command
+  // Mode handlers
+  const handleToggleMode = () => {
+    track({ type: 'command_execute', command: 'toggle_mode' });
+    toggleMode();
+    track({ type: 'mode_change', mode: mode === 'stealth' ? 'overdrive' : 'stealth' });
+    setOpen(false);
+  };
+
+  const handleSetMode = (newMode: 'stealth' | 'overdrive') => {
+    track({ type: 'command_execute', command: `set_mode:${newMode}` });
+    setMode(newMode);
+    track({ type: 'mode_change', mode: newMode });
+    setOpen(false);
+  };
+
+  // Hidden unlock commands
   const handleInputChange = (value: string) => {
     setInputValue(value);
-    // Check for secret command
+    // Check for heist secret command
     if (value.toLowerCase() === 'heist' && !heistUnlocked) {
       unlockHeist();
       track({ type: 'heist_unlocked', source: 'command' });
+      setInputValue('');
+      setOpen(false);
+      return;
+    }
+    // Check for overdrive secret command
+    if (value.toLowerCase() === 'ovrdrv' && !overdriveUnlocked) {
+      unlockOverdrive();
+      triggerGlitch(300);
+      track({ type: 'overdrive_unlocked', source: 'command' });
+      track({ type: 'mode_change', mode: 'overdrive' });
       setInputValue('');
       setOpen(false);
     }
@@ -137,6 +171,33 @@ export function CommandPalette() {
               </span>
             </CommandItem>
           ))}
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="Mode">
+          {overdriveUnlocked && (
+            <CommandItem onSelect={handleToggleMode}>
+              <span>Toggle Mode</span>
+              <span className="ml-auto text-xs text-foreground/40 uppercase">
+                {mode}
+              </span>
+            </CommandItem>
+          )}
+          <CommandItem onSelect={() => handleSetMode('stealth')}>
+            <span>Set Mode: STEALTH</span>
+            {mode === 'stealth' && (
+              <span className="ml-auto text-xs text-accent">●</span>
+            )}
+          </CommandItem>
+          {overdriveUnlocked && (
+            <CommandItem onSelect={() => handleSetMode('overdrive')}>
+              <span>Set Mode: OVERDRIVE</span>
+              {mode === 'overdrive' && (
+                <span className="ml-auto text-xs text-accent">●</span>
+              )}
+            </CommandItem>
+          )}
         </CommandGroup>
 
         <CommandSeparator />

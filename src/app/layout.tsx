@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/shell/ThemeProvider";
+import { ModeProvider } from "@/components/shell/ModeProvider";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-heading",
@@ -31,7 +32,9 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${ibmPlexMono.variable} antialiased`}
       >
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <ModeProvider>{children}</ModeProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
