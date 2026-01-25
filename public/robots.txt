@@ -1,0 +1,9 @@
+# BLACKBOX OS robots.txt
+# Allow all crawlers to index all pages
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://blackbox-os.vercel.app/sitemap.xml
+
