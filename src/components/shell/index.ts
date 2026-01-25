@@ -8,4 +8,5 @@ export { CommandPalette } from './CommandPalette';
 export { MobileProjectList } from './MobileProjectList';
 export { MobileListTrigger } from './MobileListTrigger';
 export { Reticle } from './Reticle';
+export { LoadingOverlay } from './LoadingOverlay';
 

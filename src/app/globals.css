@@ -125,3 +125,94 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* BLACKBOX OS Design Tokens */
+@layer utilities {
+  /* Typography scale - font-sans maps to --font-heading (Space Grotesk) */
+  .text-display {
+    @apply text-4xl font-sans tracking-tight;
+  }
+  .text-title {
+    @apply text-2xl font-sans tracking-tight;
+  }
+  .text-heading {
+    @apply text-lg font-sans tracking-tight;
+  }
+  .text-body {
+    @apply text-sm leading-relaxed;
+  }
+  .text-label {
+    @apply text-xs font-mono uppercase tracking-widest;
+  }
+  .text-micro {
+    @apply text-[10px] font-mono uppercase tracking-widest;
+  }
+
+  /* Border styles */
+  .border-hairline {
+    @apply border border-border/50;
+  }
+  .border-subtle {
+    @apply border border-border/30;
+  }
+  .border-accent-glow {
+    @apply border border-accent/40;
+  }
+
+  /* Spacing tokens */
+  .space-section {
+    @apply space-y-6;
+  }
+  .space-content {
+    @apply space-y-4;
+  }
+  .space-tight {
+    @apply space-y-2;
+  }
+
+  /* Scanline overlay effect */
+  .scanlines {
+    position: relative;
+  }
+  .scanlines::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 50;
+  }
+
+  /* Grain overlay effect */
+  .grain {
+    position: relative;
+  }
+  .grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 49;
+  }
+
+  /* Glow effects */
+  .glow-accent {
+    box-shadow: 0 0 20px -5px oklch(0.65 0.2 250 / 0.3);
+  }
+  .glow-accent-sm {
+    box-shadow: 0 0 10px -3px oklch(0.65 0.2 250 / 0.2);
+  }
+
+  /* Wireframe mode styles */
+  .wireframe-text {
+    @apply text-white font-mono;
+  }
+}

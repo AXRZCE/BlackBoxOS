@@ -12,43 +12,60 @@ export function StatusBar() {
 
   const isVault = pathname === '/vault';
 
-  // Quality indicator color
-  const qualityColor = {
-    high: 'text-green-400',
-    medium: 'text-yellow-400',
-    low: 'text-red-400',
+  // Quality indicator styling
+  const qualityStyles = {
+    high: { color: 'text-green-400', dot: 'bg-green-400' },
+    medium: { color: 'text-yellow-400', dot: 'bg-yellow-400' },
+    low: { color: 'text-red-400', dot: 'bg-red-400' },
   }[qualityPreset];
 
   return (
-    <footer className="h-8 px-4 flex items-center justify-between border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <footer className="h-8 px-4 flex items-center justify-between border-t border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex items-center gap-4">
-        <span className="font-mono text-xs text-foreground/50 uppercase tracking-wider">
-          {pathname === '/boot' ? 'BOOT' : isVault ? 'VAULT' : 'SYSTEM'}
-        </span>
+        {/* Mode indicator */}
+        <div className="flex items-center gap-2">
+          <div className={`w-1.5 h-1.5 rounded-full ${qualityStyles.dot}`} />
+          <span className="text-micro text-foreground/50">
+            {pathname === '/boot' ? 'BOOT' : isVault ? 'VAULT' : 'SYSTEM'}
+          </span>
+        </div>
+
+        {/* Selection indicator */}
         {isVault && selectedProjectId && (
-          <span className="font-mono text-xs text-accent">
-            → {selectedProjectId}
+          <span className="text-micro text-accent">
+            ▸ {selectedProjectId}
           </span>
         )}
+
+        {/* Wireframe mode badge */}
         {isVault && wireframe && (
-          <span className="font-mono text-xs text-foreground/40">
-            [WIREFRAME]
+          <span className="text-micro text-foreground/30 border border-foreground/20 px-1.5 py-0.5 rounded-sm">
+            WIRE
           </span>
         )}
       </div>
-      <div className="flex items-center gap-4">
+
+      <div className="flex items-center gap-3">
         {isVault && (
           <>
-            <span className={`font-mono text-xs ${qualityColor}`}>
-              [{qualityPreset.toUpperCase()}]
+            {/* Quality preset */}
+            <span className={`text-micro ${qualityStyles.color}`}>
+              {qualityPreset.toUpperCase()}
             </span>
-            <span className="font-mono text-xs text-foreground/30">
-              FPS: {fps || '--'}
+
+            {/* FPS counter */}
+            <span className="text-micro text-foreground/30 tabular-nums">
+              {fps || '--'} FPS
             </span>
+
+            {/* Separator */}
+            <span className="text-foreground/20">│</span>
           </>
         )}
-        <span className="font-mono text-xs text-foreground/40">
-          {isVault ? 'J/K: NAV  /: CMD  ESC: CLOSE' : 'ENTER: OPEN  ESC: CLOSE'}
+
+        {/* Keyboard hints */}
+        <span className="text-micro text-foreground/30 hidden sm:inline">
+          {isVault ? 'J/K NAV · / CMD · ESC CLOSE' : 'ENTER OPEN · ESC CLOSE'}
         </span>
       </div>
     </footer>

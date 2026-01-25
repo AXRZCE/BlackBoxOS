@@ -4,6 +4,7 @@ import { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useVaultStore } from '@/lib/store';
 import { FPSMonitor } from '@/lib/device';
+import { track } from '@/lib/telemetry';
 
 // Rolling average window size
 const SAMPLE_SIZE = 60;
@@ -60,6 +61,7 @@ export function FpsMeter() {
           const newPreset = qualityPreset === 'high' ? 'medium' : 'low';
           setQualityPreset(newPreset);
           hasDowngraded.current = true;
+          track({ type: 'quality_preset_changed', preset: newPreset, auto: true });
           console.log(`[FpsMeter] Low FPS detected, downgrading to ${newPreset}`);
         }
       }

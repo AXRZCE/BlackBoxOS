@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import {
   CommandDialog,
   CommandEmpty,
@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/command';
 import { useVaultStore } from '@/lib/store';
 import { projects } from '@/data/projects';
+import { track } from '@/lib/telemetry';
 
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
@@ -19,6 +20,17 @@ export function CommandPalette() {
   const clearSelection = useVaultStore((state) => state.clearSelection);
   const toggleWireframe = useVaultStore((state) => state.toggleWireframe);
   const wireframe = useVaultStore((state) => state.wireframe);
+  const wasOpenRef = useRef(false);
+
+  // Track open/close
+  useEffect(() => {
+    if (open && !wasOpenRef.current) {
+      track({ type: 'command_palette_open' });
+    } else if (!open && wasOpenRef.current) {
+      track({ type: 'command_palette_close' });
+    }
+    wasOpenRef.current = open;
+  }, [open]);
 
   // Notify keyboard handler about palette state
   useEffect(() => {
@@ -49,16 +61,20 @@ export function CommandPalette() {
   }, [handleKeyDown]);
 
   const handleSelectProject = (projectId: string) => {
+    track({ type: 'command_execute', command: `select:${projectId}` });
     setSelectedProjectId(projectId);
     setOpen(false);
   };
 
   const handleToggleWireframe = () => {
+    track({ type: 'command_execute', command: 'toggle_wireframe' });
+    track({ type: 'wireframe_toggle', enabled: !wireframe });
     toggleWireframe();
     setOpen(false);
   };
 
   const handleClearSelection = () => {
+    track({ type: 'command_execute', command: 'clear_selection' });
     clearSelection();
     setOpen(false);
   };
