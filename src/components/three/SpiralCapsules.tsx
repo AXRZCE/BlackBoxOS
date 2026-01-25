@@ -1,21 +1,23 @@
 'use client';
 
-import { useRef, useMemo } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useMemo } from 'react';
 import { projects } from '@/data/projects';
 import { Capsule } from './Capsule';
-import type { Group } from 'three';
+
+// Spiral parameters - must match lib/rail.ts
+const SPIRAL_ANGLE_INCREMENT = 0.8;
+const SPIRAL_BASE_RADIUS = 2;
+const SPIRAL_RADIUS_INCREMENT = 0.3;
+const SPIRAL_HEIGHT_INCREMENT = 0.5;
 
 export function SpiralCapsules() {
-  const groupRef = useRef<Group>(null);
-
   // Generate spiral positions for capsules
   const capsulePositions = useMemo(() => {
     return projects.map((_, index) => {
-      const angle = index * 0.8; // Spiral angle increment
-      const radius = 2 + index * 0.3; // Increasing radius
-      const height = index * 0.5; // Height along spiral
-      
+      const angle = index * SPIRAL_ANGLE_INCREMENT;
+      const radius = SPIRAL_BASE_RADIUS + index * SPIRAL_RADIUS_INCREMENT;
+      const height = index * SPIRAL_HEIGHT_INCREMENT;
+
       return {
         x: Math.cos(angle) * radius,
         y: height - (projects.length * 0.25), // Center vertically
@@ -25,14 +27,9 @@ export function SpiralCapsules() {
     });
   }, []);
 
-  useFrame((_, delta) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.05; // Slow rotation
-    }
-  });
-
+  // No auto-rotation - camera rail handles movement in M2
   return (
-    <group ref={groupRef}>
+    <group>
       {projects.map((project, index) => (
         <Capsule
           key={project.id}

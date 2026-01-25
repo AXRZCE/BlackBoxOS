@@ -19,14 +19,18 @@ export function Capsule({ project, position, rotation }: CapsuleProps) {
 
   const setSelectedProjectId = useVaultStore((state) => state.setSelectedProjectId);
   const setHoverId = useVaultStore((state) => state.setHoverId);
+  const selectedProjectId = useVaultStore((state) => state.selectedProjectId);
+  const wireframe = useVaultStore((state) => state.wireframe);
+
+  const isSelected = selectedProjectId === project.id;
 
   useFrame((_, delta) => {
     if (meshRef.current) {
       // Subtle floating animation
       meshRef.current.position.y = position[1] + Math.sin(Date.now() * 0.002) * 0.05;
 
-      // Scale on hover
-      const targetScale = hovered ? 1.1 : 1;
+      // Scale on hover or selection
+      const targetScale = hovered || isSelected ? 1.1 : 1;
       meshRef.current.scale.lerp({ x: targetScale, y: targetScale, z: targetScale }, delta * 5);
     }
   });
@@ -47,6 +51,11 @@ export function Capsule({ project, position, rotation }: CapsuleProps) {
     setSelectedProjectId(project.id);
   };
 
+  // Determine colors based on state
+  const isHighlighted = hovered || isSelected;
+  const baseColor = wireframe ? '#ffffff' : (isHighlighted ? '#3b82f6' : '#1a1a1a');
+  const emissiveColor = isHighlighted ? '#3b82f6' : '#000000';
+
   return (
     <group position={position} rotation={rotation}>
       <mesh
@@ -57,11 +66,12 @@ export function Capsule({ project, position, rotation }: CapsuleProps) {
       >
         <RoundedBox args={[1.2, 0.8, 0.4]} radius={0.08} smoothness={4}>
           <meshStandardMaterial
-            color={hovered ? '#3b82f6' : '#1a1a1a'}
-            metalness={0.8}
-            roughness={0.2}
-            emissive={hovered ? '#3b82f6' : '#000000'}
-            emissiveIntensity={hovered ? 0.3 : 0}
+            color={baseColor}
+            metalness={wireframe ? 0 : 0.8}
+            roughness={wireframe ? 1 : 0.2}
+            emissive={emissiveColor}
+            emissiveIntensity={isHighlighted ? 0.3 : 0}
+            wireframe={wireframe}
           />
         </RoundedBox>
       </mesh>
@@ -78,7 +88,7 @@ export function Capsule({ project, position, rotation }: CapsuleProps) {
             px-3 py-1.5 rounded-sm
             font-mono text-center whitespace-nowrap
             border transition-all duration-200
-            ${hovered
+            ${isHighlighted
               ? 'bg-accent/20 border-accent text-white'
               : 'bg-background/80 border-border text-foreground/70'
             }
