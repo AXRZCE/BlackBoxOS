@@ -30,8 +30,11 @@ function getHeroSnapshot(): HeroState {
   return heroState;
 }
 
+// Cache the server snapshot to avoid infinite loops in useSyncExternalStore
+const SERVER_SNAPSHOT: HeroState = { isShowing: false, phase: 'line1' };
+
 function getServerSnapshot(): HeroState {
-  return { isShowing: false, phase: 'line1' };
+  return SERVER_SNAPSHOT;
 }
 
 function showHero(dismissCallback: () => void) {
