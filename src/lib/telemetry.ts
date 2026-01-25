@@ -23,7 +23,13 @@ export type TelemetryEvent =
   | { type: 'mobile_list_open' }
   | { type: 'mobile_list_close' }
   | { type: 'reticle_lock'; project_id: string }
-  | { type: 'deep_link'; project_id: string };
+  | { type: 'deep_link'; project_id: string }
+  // Theme events
+  | { type: 'theme_toggle'; theme: 'blackbox' | 'heist' }
+  | { type: 'heist_unlocked'; source: 'command' | 'lock_break' }
+  // Labs events
+  | { type: 'labs_open' }
+  | { type: 'lab_used'; name: string };
 
 // Internal event queue for batching (optional future enhancement)
 const eventQueue: TelemetryEvent[] = [];

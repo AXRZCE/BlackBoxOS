@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "optimize-assets": "node tools/assets/optimize.mjs"
+    "optimize-assets": "node tools/assets/optimize.mjs",
+    "export:case-studies": "node tools/case-studies/export.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",

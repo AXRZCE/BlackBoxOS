@@ -1,0 +1,198 @@
+#!/usr/bin/env node
+/**
+ * BLACKBOX OS - Case Study Export Tool
+ * 
+ * Generates markdown files from project data.
+ * Usage: pnpm export:case-studies
+ * 
+ * Output: content/case-studies/<id>.md
+ */
+
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const ROOT = join(__dirname, '..', '..');
+
+// Read the projects data file and extract projects array
+const projectsPath = join(ROOT, 'src', 'data', 'projects.ts');
+const projectsSource = readFileSync(projectsPath, 'utf-8');
+
+// Parse the TypeScript file to extract project data
+// This is a simple regex-based extraction - works for our data format
+function parseProjects(source) {
+  // Find the projects array
+  const match = source.match(/export const projects[^=]*=\s*\[([\s\S]*?)\];/);
+  if (!match) throw new Error('Could not find projects array in source');
+  
+  // Use a more lenient parsing approach
+  const projects = [];
+  const projectBlocks = source.split(/\n  \{/).slice(1);
+  
+  for (const block of projectBlocks) {
+    const endIndex = block.indexOf('\n  },');
+    const projectStr = endIndex > 0 ? block.slice(0, endIndex) : block;
+    
+    // Extract fields
+    const getId = (s) => s.match(/id:\s*['"]([^'"]+)['"]/)?.[1] || '';
+    const getStr = (s, key) => s.match(new RegExp(`${key}:\\s*['"]([^'"]+)['"]`))?.[1] || '';
+    const getArr = (s, key) => {
+      const match = s.match(new RegExp(`${key}:\\s*\\[([^\\]]*?)\\]`));
+      if (!match) return [];
+      return match[1].match(/['"]([^'"]+)['"]/g)?.map(s => s.replace(/['"]/g, '')) || [];
+    };
+    
+    // Extract sections
+    const getSections = (s) => {
+      const sections = {};
+      const sectionMatch = s.match(/sections:\s*\{([\s\S]*?)\n    \}/);
+      if (sectionMatch) {
+        const sectionsStr = sectionMatch[1];
+        
+        // problem
+        const problemMatch = sectionsStr.match(/problem:\s*['"`]([^'"`]+)['"`]/);
+        sections.problem = problemMatch?.[1] || '';
+        
+        // outcome
+        const outcomeMatch = sectionsStr.match(/outcome:\s*['"`]([^'"`]+)['"`]/);
+        sections.outcome = outcomeMatch?.[1] || '';
+        
+        // arrays
+        sections.constraints = getArr(sectionsStr, 'constraints');
+        sections.decisions = getArr(sectionsStr, 'decisions');
+        sections.learnings = getArr(sectionsStr, 'learnings');
+      }
+      return sections;
+    };
+    
+    // Extract artifacts
+    const getArtifacts = (s) => {
+      const artifacts = [];
+      const artifactMatches = s.matchAll(/\{\s*type:\s*['"](\w+)['"]\s*,\s*label:\s*['"]([^'"]+)['"]\s*,\s*href:\s*['"]([^'"]+)['"]\s*\}/g);
+      for (const match of artifactMatches) {
+        artifacts.push({ type: match[1], label: match[2], href: match[3] });
+      }
+      return artifacts;
+    };
+    
+    const project = {
+      id: getId(projectStr),
+      title: getStr(projectStr, 'title'),
+      category: getStr(projectStr, 'category'),
+      year: getStr(projectStr, 'year'),
+      context: getStr(projectStr, 'context'),
+      role: getStr(projectStr, 'role'),
+      timeframe: getStr(projectStr, 'timeframe'),
+      stack: getArr(projectStr, 'stack'),
+      sections: getSections(projectStr),
+      artifacts: getArtifacts(projectStr),
+    };
+    
+    if (project.id) projects.push(project);
+  }
+  
+  return projects;
+}
+
+// Generate markdown content for a project
+function generateMarkdown(project) {
+  const frontmatter = `---
+id: "${project.id}"
+title: "${project.title}"
+category: "${project.category}"
+year: "${project.year}"
+role: "${project.role}"
+timeframe: "${project.timeframe}"
+stack:
+${project.stack.map(t => `  - "${t}"`).join('\n')}
+---`;
+
+  const body = `
+# ${project.title}
+
+> ${project.context}
+
+## Overview
+
+| | |
+|---|---|
+| **Category** | ${project.category} |
+| **Year** | ${project.year} |
+| **Role** | ${project.role} |
+| **Timeframe** | ${project.timeframe} |
+
+## Tech Stack
+
+${project.stack.map(t => `- ${t}`).join('\n')}
+
+## Problem
+
+${project.sections.problem || '_No problem statement provided._'}
+
+## Constraints
+
+${project.sections.constraints?.length > 0 
+  ? project.sections.constraints.map(c => `- ${c}`).join('\n')
+  : '_No constraints specified._'}
+
+## Key Decisions
+
+${project.sections.decisions?.length > 0
+  ? project.sections.decisions.map(d => `- ${d}`).join('\n')
+  : '_No key decisions documented._'}
+
+## Outcome
+
+${project.sections.outcome || '_No outcome documented._'}
+
+## Learnings
+
+${project.sections.learnings?.length > 0
+  ? project.sections.learnings.map(l => `- ${l}`).join('\n')
+  : '_No learnings documented._'}
+
+## Artifacts
+
+${project.artifacts?.length > 0
+  ? project.artifacts.map(a => `- [${a.label}](${a.href})`).join('\n')
+  : '_No artifacts available._'}
+
+---
+
+*Generated by BLACKBOX OS Case Study Export Tool*
+`;
+
+  return frontmatter + body;
+}
+
+// Main export function
+function exportCaseStudies() {
+  console.log('📦 BLACKBOX OS - Case Study Export Tool\n');
+  
+  const outputDir = join(ROOT, 'content', 'case-studies');
+  
+  // Ensure output directory exists
+  if (!existsSync(outputDir)) {
+    mkdirSync(outputDir, { recursive: true });
+  }
+  
+  // Parse projects
+  const projects = parseProjects(projectsSource);
+  console.log(`Found ${projects.length} projects\n`);
+  
+  // Generate markdown for each project
+  for (const project of projects) {
+    const markdown = generateMarkdown(project);
+    const outputPath = join(outputDir, `${project.id}.md`);
+    writeFileSync(outputPath, markdown, 'utf-8');
+    console.log(`✓ ${project.id}.md`);
+  }
+  
+  console.log(`\n✅ Exported ${projects.length} case studies to content/case-studies/`);
+}
+
+// Run
+exportCaseStudies();
+

@@ -11,16 +11,25 @@ import {
   CommandSeparator,
 } from '@/components/ui/command';
 import { useVaultStore } from '@/lib/store';
+import { useThemeStore } from '@/lib/theme-store';
 import { projects } from '@/data/projects';
 import { track } from '@/lib/telemetry';
 
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
+  const [inputValue, setInputValue] = useState('');
   const setSelectedProjectId = useVaultStore((state) => state.setSelectedProjectId);
   const clearSelection = useVaultStore((state) => state.clearSelection);
   const toggleWireframe = useVaultStore((state) => state.toggleWireframe);
   const wireframe = useVaultStore((state) => state.wireframe);
   const wasOpenRef = useRef(false);
+
+  // Theme state
+  const theme = useThemeStore((s) => s.theme);
+  const heistUnlocked = useThemeStore((s) => s.heistUnlocked);
+  const setTheme = useThemeStore((s) => s.setTheme);
+  const toggleTheme = useThemeStore((s) => s.toggleTheme);
+  const unlockHeist = useThemeStore((s) => s.unlockHeist);
 
   // Track open/close
   useEffect(() => {
@@ -79,12 +88,42 @@ export function CommandPalette() {
     setOpen(false);
   };
 
+  const handleToggleTheme = () => {
+    track({ type: 'command_execute', command: 'toggle_theme' });
+    toggleTheme();
+    track({ type: 'theme_toggle', theme: theme === 'blackbox' ? 'heist' : 'blackbox' });
+    setOpen(false);
+  };
+
+  const handleSetTheme = (newTheme: 'blackbox' | 'heist') => {
+    track({ type: 'command_execute', command: `set_theme:${newTheme}` });
+    setTheme(newTheme);
+    track({ type: 'theme_toggle', theme: newTheme });
+    setOpen(false);
+  };
+
+  // Hidden heist unlock command
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
+    // Check for secret command
+    if (value.toLowerCase() === 'heist' && !heistUnlocked) {
+      unlockHeist();
+      track({ type: 'heist_unlocked', source: 'command' });
+      setInputValue('');
+      setOpen(false);
+    }
+  };
+
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
-      <CommandInput placeholder="Type a command or search projects..." />
+      <CommandInput
+        placeholder="Type a command or search projects..."
+        value={inputValue}
+        onValueChange={handleInputChange}
+      />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
-        
+
         <CommandGroup heading="Projects">
           {projects.map((project) => (
             <CommandItem
@@ -98,6 +137,31 @@ export function CommandPalette() {
               </span>
             </CommandItem>
           ))}
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="Theme">
+          <CommandItem onSelect={handleToggleTheme}>
+            <span>Toggle Theme</span>
+            <span className="ml-auto text-xs text-foreground/40 uppercase">
+              {theme}
+            </span>
+          </CommandItem>
+          <CommandItem onSelect={() => handleSetTheme('blackbox')}>
+            <span>Set Theme: BLACKBOX</span>
+            {theme === 'blackbox' && (
+              <span className="ml-auto text-xs text-accent">●</span>
+            )}
+          </CommandItem>
+          {heistUnlocked && (
+            <CommandItem onSelect={() => handleSetTheme('heist')}>
+              <span>Set Theme: HEIST</span>
+              {theme === 'heist' && (
+                <span className="ml-auto text-xs text-accent">●</span>
+              )}
+            </CommandItem>
+          )}
         </CommandGroup>
 
         <CommandSeparator />
