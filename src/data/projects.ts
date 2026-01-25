@@ -18,6 +18,18 @@ export interface ProjectSections {
   learnings: string[];
 }
 
+// M6: New fields for recruiter credibility
+export interface Metric {
+  label: string;
+  value: string;
+}
+
+export interface ProofItem {
+  type: 'image' | 'link';
+  label: string;
+  href: string;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -39,6 +51,12 @@ export interface Project {
   artifacts: Artifact[];
   media: MediaItem[];
   modelPath?: string; // GLB file path
+  // M6: Recruiter credibility fields
+  outcomes: string[]; // 2-4 key outcomes
+  metrics: Metric[]; // Quantitative or qualitative metrics
+  proof: ProofItem[]; // Screenshots, links to evidence
+  highlights: string[]; // Key decisions/achievements (max 3)
+  featured?: boolean; // Mark as top project for War Room
 }
 
 export const projects: Project[] = [
@@ -81,6 +99,27 @@ export const projects: Project[] = [
     media: [
       { type: 'image', src: '/images/neural-interface-demo.jpg', alt: 'Neural Interface Demo' },
     ],
+    // M6 fields
+    featured: true,
+    outcomes: [
+      'Reduced signal processing latency from 50ms to 8ms',
+      'Achieved 95% accuracy on standard BCI benchmarks',
+      'Published research paper accepted at NeurIPS',
+    ],
+    metrics: [
+      { label: 'Latency', value: '8ms avg' },
+      { label: 'Accuracy', value: '95%' },
+      { label: 'Users tested', value: '50+' },
+    ],
+    proof: [
+      { type: 'link', label: 'Research Paper', href: '#' },
+      { type: 'link', label: 'GitHub Repository', href: '#' },
+    ],
+    highlights: [
+      'Designed transformer architecture for temporal signal processing',
+      'Led team of 4 engineers through research-to-prototype cycle',
+      'Implemented real-time edge inference pipeline',
+    ],
   },
   {
     id: 'project-2',
@@ -106,6 +145,26 @@ export const projects: Project[] = [
       { label: 'Architecture', type: 'docs', href: '#' },
     ],
     media: [],
+    // M6 fields
+    featured: true,
+    outcomes: [
+      'Connected 12 quantum processors across 5 continents',
+      'Achieved 99.7% network uptime',
+      'Enabled cross-institutional quantum research collaboration',
+    ],
+    metrics: [
+      { label: 'Uptime', value: '99.7%' },
+      { label: 'Nodes', value: '12 QPUs' },
+      { label: 'Continents', value: '5' },
+    ],
+    proof: [
+      { type: 'link', label: 'Architecture Docs', href: '#' },
+    ],
+    highlights: [
+      'Designed fault-tolerant mesh topology from scratch',
+      'Implemented zero-knowledge proofs for secure access',
+      'Built custom quantum routing protocol',
+    ],
   },
   {
     id: 'project-3',
@@ -132,6 +191,27 @@ export const projects: Project[] = [
       { label: 'Docs', type: 'docs', href: '#' },
     ],
     media: [],
+    // M6 fields
+    featured: true,
+    outcomes: [
+      'Grew to 50,000+ active users',
+      'Integrated with 3 major DAWs (Ableton, Logic, FL Studio)',
+      'Reduced sound design iteration time significantly',
+    ],
+    metrics: [
+      { label: 'Active Users', value: '50K+' },
+      { label: 'DAW Integrations', value: '3' },
+      { label: 'Latency', value: '<5ms' },
+    ],
+    proof: [
+      { type: 'link', label: 'Live Demo', href: '#' },
+      { type: 'link', label: 'Documentation', href: '#' },
+    ],
+    highlights: [
+      'Built WebAssembly audio DSP for cross-platform support',
+      'Implemented neural audio codec for style transfer',
+      'Designed modular plugin architecture',
+    ],
   },
   {
     id: 'project-4',
@@ -157,6 +237,23 @@ export const projects: Project[] = [
       { label: 'Privacy Policy', type: 'docs', href: '#' },
     ],
     media: [],
+    // M6 fields
+    outcomes: [
+      'Protected data for 100K+ users',
+      'Zero known security breaches',
+      'GDPR/CCPA compliant architecture',
+    ],
+    metrics: [
+      { label: 'Users Protected', value: '100K+' },
+      { label: 'Breaches', value: '0' },
+    ],
+    proof: [
+      { type: 'link', label: 'Privacy Policy', href: '#' },
+    ],
+    highlights: [
+      'Implemented homomorphic encryption for data operations',
+      'Built browser extension for seamless data capture',
+    ],
   },
   {
     id: 'project-5',
@@ -183,6 +280,24 @@ export const projects: Project[] = [
       { label: 'Demo', type: 'demo', href: '#' },
     ],
     media: [],
+    // M6 fields
+    outcomes: [
+      'Reduced design iteration time by 60%',
+      'Enabled real-time collaboration across devices',
+      'Piloted with 3 architecture firms',
+    ],
+    metrics: [
+      { label: 'Iteration Time', value: '-60%' },
+      { label: 'Pilot Partners', value: '3 firms' },
+    ],
+    proof: [
+      { type: 'link', label: 'Case Study', href: '#' },
+      { type: 'link', label: 'Demo Video', href: '#' },
+    ],
+    highlights: [
+      'Built custom hand tracking ML model',
+      'Implemented neural radiance fields for materials',
+    ],
   },
   {
     id: 'project-6',
@@ -209,6 +324,29 @@ export const projects: Project[] = [
       { label: 'GitHub', type: 'github', href: '#' },
     ],
     media: [],
+    // M6 fields
+    outcomes: [
+      '10x better compression than alternatives',
+      '5x faster queries on time-range operations',
+      'Handles 1M+ writes per second',
+    ],
+    metrics: [
+      { label: 'Compression', value: '10x better' },
+      { label: 'Query Speed', value: '5x faster' },
+      { label: 'Write Throughput', value: '1M+/sec' },
+    ],
+    proof: [
+      { type: 'link', label: 'Benchmarks', href: '#' },
+      { type: 'link', label: 'GitHub', href: '#' },
+    ],
+    highlights: [
+      'Designed LSM-tree with time-partitioning',
+      'Built custom compression codec for sensor data',
+    ],
   },
 ];
+
+// Helper to get featured/top projects
+export const getFeaturedProjects = () => projects.filter((p) => p.featured);
+export const getTopProjects = (count = 3) => getFeaturedProjects().slice(0, count);
 
