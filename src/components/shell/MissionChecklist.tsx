@@ -44,22 +44,13 @@ interface CheckedState {
 }
 
 // External store for localStorage persistence
-const listeners = new Set<() => void>();
+const checklistListeners = new Set<() => void>();
 let cachedChecked: CheckedState = {};
+let isInitialized = false;
 
-function getSnapshot(): CheckedState {
-  return cachedChecked;
-}
-
-const SERVER_SNAPSHOT: CheckedState = {};
-function getServerSnapshot(): CheckedState {
-  return SERVER_SNAPSHOT;
-}
-
-function subscribe(callback: () => void): () => void {
-  listeners.add(callback);
-  // Load from localStorage on first subscription (client-side only)
-  if (typeof window !== 'undefined' && Object.keys(cachedChecked).length === 0) {
+function initializeFromStorage(): void {
+  if (!isInitialized && typeof window !== 'undefined') {
+    isInitialized = true;
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
@@ -69,7 +60,21 @@ function subscribe(callback: () => void): () => void {
       }
     }
   }
-  return () => listeners.delete(callback);
+}
+
+function getSnapshot(): CheckedState {
+  initializeFromStorage();
+  return cachedChecked;
+}
+
+const SERVER_SNAPSHOT: CheckedState = {};
+function getServerSnapshot(): CheckedState {
+  return SERVER_SNAPSHOT;
+}
+
+function subscribeChecklist(callback: () => void): () => void {
+  checklistListeners.add(callback);
+  return () => checklistListeners.delete(callback);
 }
 
 function updateChecked(id: string, value: boolean): void {
@@ -77,12 +82,40 @@ function updateChecked(id: string, value: boolean): void {
   if (typeof window !== 'undefined') {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(cachedChecked));
   }
-  listeners.forEach((l) => l());
+  checklistListeners.forEach((l) => l());
+}
+
+// Mounting state external store (avoids setState in useEffect)
+const mountListeners = new Set<() => void>();
+let isMountedState = false;
+
+function getMountSnapshot(): boolean {
+  return isMountedState;
+}
+
+function getMountServerSnapshot(): boolean {
+  return false;
+}
+
+function subscribeMount(callback: () => void): () => void {
+  mountListeners.add(callback);
+  // Trigger mount on first subscription (client-side)
+  if (typeof window !== 'undefined' && !isMountedState) {
+    // Use queueMicrotask to defer the state change
+    queueMicrotask(() => {
+      if (!isMountedState) {
+        isMountedState = true;
+        mountListeners.forEach((l) => l());
+      }
+    });
+  }
+  return () => mountListeners.delete(callback);
 }
 
 export function MissionChecklist() {
   const [isOpen, setIsOpen] = useState(true);
-  const checked = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const checked = useSyncExternalStore(subscribeChecklist, getSnapshot, getServerSnapshot);
+  const isMounted = useSyncExternalStore(subscribeMount, getMountSnapshot, getMountServerSnapshot);
 
   const handleCheck = useCallback((id: string) => {
     const newValue = !checked[id];
@@ -104,8 +137,7 @@ export function MissionChecklist() {
   const totalCount = CHECKLIST_ITEMS.length;
   const progressPercent = Math.round((completedCount / totalCount) * 100);
 
-  // Don't render on server
-  const isMounted = typeof window !== 'undefined';
+  // Render nothing on server and first client render to match
   if (!isMounted) return null;
 
   return (
