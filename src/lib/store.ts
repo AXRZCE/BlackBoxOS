@@ -1,12 +1,18 @@
 import { create } from 'zustand';
 import { projects } from '@/data/projects';
+import type { QualityPreset } from './device';
 
 interface VaultState {
   // Selection
   selectedProjectId: string | null;
   hoverId: string | null;
+  hoverWorldPos: [number, number, number] | null;
+  hoverScreenPos: { x: number; y: number } | null;
   setSelectedProjectId: (id: string | null) => void;
   setHoverId: (id: string | null) => void;
+  setHoverWorldPos: (pos: [number, number, number] | null) => void;
+  setHoverScreenPos: (pos: { x: number; y: number } | null) => void;
+  setHoverTarget: (id: string | null, worldPos: [number, number, number] | null) => void;
 
   // Navigation
   selectNext: () => void;
@@ -24,14 +30,32 @@ interface VaultState {
   // Performance
   fps: number;
   setFps: (fps: number) => void;
+
+  // Quality preset
+  qualityPreset: QualityPreset;
+  setQualityPreset: (preset: QualityPreset) => void;
+
+  // Mobile project list
+  mobileListOpen: boolean;
+  setMobileListOpen: (open: boolean) => void;
 }
 
 export const useVaultStore = create<VaultState>((set, get) => ({
   // Selection
   selectedProjectId: null,
   hoverId: null,
+  hoverWorldPos: null,
+  hoverScreenPos: null,
   setSelectedProjectId: (id) => set({ selectedProjectId: id }),
   setHoverId: (id) => set({ hoverId: id }),
+  setHoverWorldPos: (pos) => set({ hoverWorldPos: pos }),
+  setHoverScreenPos: (pos) => set({ hoverScreenPos: pos }),
+  setHoverTarget: (id, worldPos) => set({
+    hoverId: id,
+    hoverWorldPos: worldPos,
+    // Clear screen pos when target changes; ReticleBridge will update it
+    hoverScreenPos: worldPos ? get().hoverScreenPos : null,
+  }),
 
   // Navigation
   selectNext: () => {
@@ -61,5 +85,13 @@ export const useVaultStore = create<VaultState>((set, get) => ({
   // Performance
   fps: 0,
   setFps: (fps) => set({ fps }),
+
+  // Quality preset
+  qualityPreset: 'high',
+  setQualityPreset: (preset) => set({ qualityPreset: preset }),
+
+  // Mobile project list
+  mobileListOpen: false,
+  setMobileListOpen: (open) => set({ mobileListOpen: open }),
 }));
 

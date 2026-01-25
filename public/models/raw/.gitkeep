@@ -1,0 +1,3 @@
+# Place raw GLB/GLTF models here for optimization
+# Run: node tools/assets/optimize.mjs
+

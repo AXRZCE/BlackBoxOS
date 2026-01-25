@@ -1,9 +1,10 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html, RoundedBox } from '@react-three/drei';
-import type { Mesh } from 'three';
+import { Vector3 } from 'three';
+import type { Group } from 'three';
 import type { Project } from '@/data/projects';
 import { useVaultStore } from '@/lib/store';
 
@@ -14,36 +15,46 @@ interface CapsuleProps {
 }
 
 export function Capsule({ project, position, rotation }: CapsuleProps) {
-  const meshRef = useRef<Mesh>(null);
+  const groupRef = useRef<Group>(null);
   const [hovered, setHovered] = useState(false);
 
+  // Reusable Vector3 to avoid allocations
+  const tempVec3 = useMemo(() => new Vector3(), []);
+
   const setSelectedProjectId = useVaultStore((state) => state.setSelectedProjectId);
-  const setHoverId = useVaultStore((state) => state.setHoverId);
+  const setHoverTarget = useVaultStore((state) => state.setHoverTarget);
   const selectedProjectId = useVaultStore((state) => state.selectedProjectId);
   const wireframe = useVaultStore((state) => state.wireframe);
 
   const isSelected = selectedProjectId === project.id;
 
   useFrame((_, delta) => {
-    if (meshRef.current) {
-      // Subtle floating animation
-      meshRef.current.position.y = position[1] + Math.sin(Date.now() * 0.002) * 0.05;
+    if (groupRef.current) {
+      // Subtle floating animation on the group's y position
+      const floatOffset = Math.sin(Date.now() * 0.002) * 0.05;
+      groupRef.current.position.y = position[1] + floatOffset;
 
       // Scale on hover or selection
       const targetScale = hovered || isSelected ? 1.1 : 1;
-      meshRef.current.scale.lerp({ x: targetScale, y: targetScale, z: targetScale }, delta * 5);
+      groupRef.current.scale.lerp({ x: targetScale, y: targetScale, z: targetScale }, delta * 5);
     }
   });
 
   const handlePointerOver = () => {
     setHovered(true);
-    setHoverId(project.id);
+    // Get world position of the group for reticle targeting
+    if (groupRef.current) {
+      groupRef.current.getWorldPosition(tempVec3);
+      setHoverTarget(project.id, [tempVec3.x, tempVec3.y, tempVec3.z]);
+    } else {
+      setHoverTarget(project.id, position);
+    }
     document.body.style.cursor = 'pointer';
   };
 
   const handlePointerOut = () => {
     setHovered(false);
-    setHoverId(null);
+    setHoverTarget(null, null);
     document.body.style.cursor = 'auto';
   };
 
@@ -57,9 +68,12 @@ export function Capsule({ project, position, rotation }: CapsuleProps) {
   const emissiveColor = isHighlighted ? '#3b82f6' : '#000000';
 
   return (
-    <group position={position} rotation={rotation}>
+    <group
+      ref={groupRef}
+      position={[position[0], position[1], position[2]]}
+      rotation={rotation}
+    >
       <mesh
-        ref={meshRef}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
         onClick={handleClick}

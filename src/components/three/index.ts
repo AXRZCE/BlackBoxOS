@@ -4,4 +4,5 @@ export { Capsule } from './Capsule';
 export { CaseFileSheet } from './CaseFileSheet';
 export { CameraRail } from './CameraRail';
 export { FpsMeter } from './FpsMeter';
+export { ReticleBridge } from './ReticleBridge';
 

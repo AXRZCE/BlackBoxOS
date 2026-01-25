@@ -3,21 +3,31 @@
 import { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useVaultStore } from '@/lib/store';
+import { FPSMonitor } from '@/lib/device';
 
 // Rolling average window size
 const SAMPLE_SIZE = 60;
 
 export function FpsMeter() {
   const setFps = useVaultStore((state) => state.setFps);
+  const qualityPreset = useVaultStore((state) => state.qualityPreset);
+  const setQualityPreset = useVaultStore((state) => state.setQualityPreset);
+
   const frameTimes = useRef<number[]>([]);
   const lastTime = useRef<number>(0);
   const initialized = useRef(false);
+  const fpsMonitor = useRef<FPSMonitor | null>(null);
+  const hasDowngraded = useRef(false);
 
-  // Initialize lastTime in useEffect to avoid calling impure function during render
+  // Initialize in useEffect to avoid calling impure function during render
   useEffect(() => {
     lastTime.current = performance.now();
+    fpsMonitor.current = new FPSMonitor();
     initialized.current = true;
-  }, []);
+
+    // Reset downgrade flag when quality changes (allows re-downgrade if upgraded)
+    hasDowngraded.current = false;
+  }, [qualityPreset]);
 
   useFrame(() => {
     if (!initialized.current) return;
@@ -37,6 +47,22 @@ export function FpsMeter() {
       const avgDelta = frameTimes.current.reduce((a, b) => a + b, 0) / frameTimes.current.length;
       const fps = Math.round(1000 / avgDelta);
       setFps(fps);
+
+      // Check for FPS-based downgrade (only if not already at lowest quality)
+      if (
+        fpsMonitor.current &&
+        !hasDowngraded.current &&
+        qualityPreset !== 'low'
+      ) {
+        const shouldDowngrade = fpsMonitor.current.addSample(fps);
+        if (shouldDowngrade) {
+          // Downgrade quality
+          const newPreset = qualityPreset === 'high' ? 'medium' : 'low';
+          setQualityPreset(newPreset);
+          hasDowngraded.current = true;
+          console.log(`[FpsMeter] Low FPS detected, downgrading to ${newPreset}`);
+        }
+      }
     }
   });
 

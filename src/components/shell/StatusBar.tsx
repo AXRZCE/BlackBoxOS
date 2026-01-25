@@ -8,8 +8,16 @@ export function StatusBar() {
   const fps = useVaultStore((state) => state.fps);
   const selectedProjectId = useVaultStore((state) => state.selectedProjectId);
   const wireframe = useVaultStore((state) => state.wireframe);
+  const qualityPreset = useVaultStore((state) => state.qualityPreset);
 
   const isVault = pathname === '/vault';
+
+  // Quality indicator color
+  const qualityColor = {
+    high: 'text-green-400',
+    medium: 'text-yellow-400',
+    low: 'text-red-400',
+  }[qualityPreset];
 
   return (
     <footer className="h-8 px-4 flex items-center justify-between border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -30,9 +38,14 @@ export function StatusBar() {
       </div>
       <div className="flex items-center gap-4">
         {isVault && (
-          <span className="font-mono text-xs text-foreground/30">
-            FPS: {fps || '--'}
-          </span>
+          <>
+            <span className={`font-mono text-xs ${qualityColor}`}>
+              [{qualityPreset.toUpperCase()}]
+            </span>
+            <span className="font-mono text-xs text-foreground/30">
+              FPS: {fps || '--'}
+            </span>
+          </>
         )}
         <span className="font-mono text-xs text-foreground/40">
           {isVault ? 'J/K: NAV  /: CMD  ESC: CLOSE' : 'ENTER: OPEN  ESC: CLOSE'}
