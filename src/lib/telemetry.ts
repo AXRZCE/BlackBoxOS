@@ -35,7 +35,11 @@ export type TelemetryEvent =
   | { type: 'overdrive_unlocked'; source: 'command' | 'hero' }
   // Transition events (M5)
   | { type: 'target_lock'; project_id: string }
-  | { type: 'casefile_open'; project_id: string };
+  | { type: 'casefile_open'; project_id: string }
+  // M6: Recruiter conversion events
+  | { type: 'war_room_enter' }
+  | { type: 'mission_checklist_item'; item: string; checked: boolean }
+  | { type: 'contact_click'; channel: 'email' | 'linkedin' | 'github' | 'resume' };
 
 // Internal event queue for batching (optional future enhancement)
 const eventQueue: TelemetryEvent[] = [];

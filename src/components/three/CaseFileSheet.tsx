@@ -137,6 +137,40 @@ export function CaseFileSheet() {
             <StatBlock label="ROLE" value={project.role} />
             <StatBlock label="TIMEFRAME" value={project.timeframe} />
 
+            {/* M6: Metrics */}
+            {project.metrics && project.metrics.length > 0 && (
+              <div>
+                <h4 className="font-mono text-[10px] text-foreground/40 uppercase tracking-widest mb-2">
+                  KEY METRICS
+                </h4>
+                <div className="space-y-1.5">
+                  {project.metrics.map((metric, i) => (
+                    <div key={i} className="flex justify-between items-baseline">
+                      <span className="text-[10px] font-mono text-foreground/50">{metric.label}</span>
+                      <span className="text-xs text-accent font-mono">{metric.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* M6: Outcomes */}
+            {project.outcomes && project.outcomes.length > 0 && (
+              <div>
+                <h4 className="font-mono text-[10px] text-foreground/40 uppercase tracking-widest mb-2">
+                  OUTCOMES
+                </h4>
+                <ul className="space-y-1">
+                  {project.outcomes.slice(0, 3).map((outcome, i) => (
+                    <li key={i} className="text-[11px] text-foreground/70 flex items-start gap-1.5">
+                      <span className="text-accent mt-0.5">→</span>
+                      <span>{outcome}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             <div>
               <h4 className="font-mono text-[10px] text-foreground/40 uppercase tracking-widest mb-2">
                 STACK

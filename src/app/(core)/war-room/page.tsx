@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getTopProjects } from '@/data/projects';
+import { MissionChecklist } from '@/components/shell/MissionChecklist';
+import { ContactPanel } from '@/components/shell/ContactPanel';
 
 export const metadata: Metadata = {
   title: 'War Room | BLACKBOX OS',
@@ -121,30 +123,13 @@ export default function WarRoomPage() {
       </section>
 
       {/* Contact CTA */}
-      <section className="py-16 px-6 md:px-12">
+      <section id="contact-cta" className="py-16 px-6 md:px-12">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-body font-sans font-semibold mb-3">Ready to talk?</h2>
           <p className="text-sm text-foreground/60 mb-8 max-w-md mx-auto">
             I&apos;m open to full-time roles, contract work, and interesting collaborations.
           </p>
-          <a
-            href="mailto:hello@example.com"
-            className="inline-block px-8 py-3 bg-accent text-background font-mono text-label uppercase tracking-wider hover:bg-accent/90 transition-colors"
-          >
-            Get in Touch
-          </a>
-          {/* Links */}
-          <div className="flex justify-center gap-6 mt-8">
-            <a href="#" className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono">
-              GitHub
-            </a>
-            <a href="#" className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono">
-              LinkedIn
-            </a>
-            <a href="/resume.pdf" className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono">
-              Resume PDF
-            </a>
-          </div>
+          <ContactPanel />
         </div>
       </section>
 
@@ -157,6 +142,9 @@ export default function WarRoomPage() {
           </Link>
         </div>
       </footer>
+
+      {/* Mission Checklist - floating UI */}
+      <MissionChecklist />
     </main>
   );
 }

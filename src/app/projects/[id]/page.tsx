@@ -127,12 +127,75 @@ export default async function ProjectPage({ params }: PageProps) {
                 ))}
               </ul>
             </Section>
+
+            {/* M6: Proof Section */}
+            {project.highlights && project.highlights.length > 0 && (
+              <Section title="KEY HIGHLIGHTS">
+                <ul className="space-y-2">
+                  {project.highlights.map((h, i) => (
+                    <li key={i} className="text-body text-foreground/70 flex items-start gap-2">
+                      <span className="text-accent mt-1">★</span>
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+              </Section>
+            )}
+
+            {project.proof && project.proof.length > 0 && (
+              <Section title="PROOF & ARTIFACTS">
+                <div className="flex flex-wrap gap-3">
+                  {project.proof.map((item, i) => (
+                    <a
+                      key={i}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-3 py-2 bg-zinc-800/50 border border-border/30 text-sm text-foreground/70 hover:text-accent hover:border-accent/50 transition-colors"
+                    >
+                      {item.type === 'image' ? '📷' : '🔗'}
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
+              </Section>
+            )}
           </div>
 
           {/* Right: Stats & Links */}
           <div className="space-y-6 md:border-l md:border-border/30 md:pl-6">
             <StatBlock label="ROLE" value={project.role} />
             <StatBlock label="TIMEFRAME" value={project.timeframe} />
+
+            {/* M6: Metrics */}
+            {project.metrics && project.metrics.length > 0 && (
+              <div>
+                <div className="text-micro text-foreground/50 mb-2">KEY METRICS</div>
+                <div className="space-y-2">
+                  {project.metrics.map((metric, i) => (
+                    <div key={i} className="flex justify-between items-baseline">
+                      <span className="text-micro text-foreground/50">{metric.label}</span>
+                      <span className="text-sm text-accent font-mono">{metric.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* M6: Outcomes */}
+            {project.outcomes && project.outcomes.length > 0 && (
+              <div>
+                <div className="text-micro text-foreground/50 mb-2">OUTCOMES</div>
+                <ul className="space-y-1.5">
+                  {project.outcomes.map((outcome, i) => (
+                    <li key={i} className="text-sm text-foreground/70 flex items-start gap-2">
+                      <span className="text-accent mt-0.5">→</span>
+                      <span>{outcome}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {project.stack.length > 0 && (
               <div>

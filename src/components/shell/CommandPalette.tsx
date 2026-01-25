@@ -237,6 +237,13 @@ export function CommandPalette() {
           <CommandItem onSelect={handleClearSelection}>
             <span>Clear Selection</span>
           </CommandItem>
+          <CommandItem onSelect={() => {
+            track({ type: 'contact_click', channel: 'resume' });
+            window.open('/resume.pdf', '_blank');
+            setOpen(false);
+          }}>
+            <span>Open Resume PDF</span>
+          </CommandItem>
         </CommandGroup>
       </CommandList>
     </CommandDialog>
