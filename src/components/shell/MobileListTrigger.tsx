@@ -15,12 +15,7 @@ export function MobileListTrigger() {
   return (
     <button
       onClick={() => setMobileListOpen(true)}
-      className="md:hidden fixed bottom-20 right-4 z-40 
-                 w-14 h-14 rounded-full 
-                 bg-zinc-900 border border-zinc-700 
-                 flex items-center justify-center
-                 shadow-lg shadow-black/50
-                 transition-transform hover:scale-105 active:scale-95"
+      className="md:hidden fixed bottom-20 right-4 z-40 w-14 h-14 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center shadow-lg shadow-black/50 transition-transform hover:scale-105 active:scale-95"
       aria-label="Open project list"
     >
       <List className="w-6 h-6 text-blue-400" />
