@@ -5,6 +5,7 @@ import { MissionChecklist } from '@/components/shell/MissionChecklist';
 import { ContactPanel } from '@/components/shell/ContactPanel';
 import { MissionTracker } from '@/components/shell/MissionTracker';
 import { ContinueButton } from '@/components/shell/ContinueButton';
+import { PalantirCard } from '@/components/shell/PalantirCard';
 
 export const metadata: Metadata = {
   title: 'War Room | BLACKBOX OS',
@@ -16,204 +17,142 @@ export default function WarRoomPage() {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-      {/* Identity Header */}
-      <header className="border-b border-border/50 py-12 px-6 md:px-12">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-micro uppercase tracking-widest text-foreground/50 mb-2 font-mono">
-            {'// WAR ROOM — TACTICAL BRIEFING'}
-          </p>
-          <h1 className="text-display font-sans font-bold tracking-tight mb-3">
-            Aksharajsinh<span className="text-accent">.</span>Parmar
-          </h1>
-          <p className="text-body text-foreground/70 max-w-xl">
-            Product &amp; AI Analyst with 1+ year of experience turning workflows into AI-assisted tools, 
-            dashboards, and sprint-delivered features. I build end-to-end — from autonomous AI infrastructure 
-            to multimodal platforms and prediction market systems. Graduating Seneca Polytechnic, April 2026. 
-            Open to full-time roles in AI/ML, product engineering, and infrastructure.
-          </p>
+      {/* Track war room visit */}
+      <MissionTracker event="visited_war_room" />
+
+      {/* Minimal Header */}
+      <header className="py-6 px-6 md:px-12 border-b border-border/10">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <Link href="/" className="font-mono text-sm text-foreground/60 hover:text-foreground transition-colors">
+            BLACKBOX<span className="text-accent">_</span>OS
+          </Link>
+          <nav className="flex items-center gap-6">
+            <Link href="/vault" className="text-sm text-foreground/50 hover:text-foreground transition-colors">
+              Vault
+            </Link>
+            <Link href="/labs" className="text-sm text-foreground/50 hover:text-foreground transition-colors">
+              Labs
+            </Link>
+            <Link
+              href="#contact"
+              className="text-sm px-4 py-2 border border-foreground/20 hover:border-foreground/50 transition-colors"
+            >
+              Get in Touch
+            </Link>
+          </nav>
         </div>
       </header>
 
-      {/* Track war room visit */}
-      <MissionTracker event="visited_war_room" />
+      {/* Hero Statement - Palantir style */}
+      <section className="py-20 md:py-32 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-sans font-medium leading-tight tracking-tight max-w-5xl">
+            I build systems that power real-time,{' '}
+            <span className="text-accent">AI-driven</span> decisions
+            in production environments—from neural interfaces to distributed databases.
+          </h1>
+        </div>
+      </section>
 
       {/* Continue from last project */}
       <ContinueButton />
 
-      {/* Top 3 Projects */}
-      <section className="py-12 px-6 md:px-12 border-b border-border/30">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-label uppercase tracking-widest text-foreground/50 mb-8 font-mono flex items-center gap-2">
-            <span className="w-2 h-2 bg-accent rounded-full" />
-            TOP PROJECTS
+      {/* Projects Section - Palantir style */}
+      <section className="border-t border-border/20">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-12">
+          <h2 className="text-lg md:text-xl font-sans text-foreground/60 mb-4">
+            My Work
           </h2>
-          <div className="grid gap-6 md:grid-cols-3">
-            {topProjects.map((project) => (
-              <article
-                key={project.id}
-                className="group border border-border/50 bg-zinc-900/50 p-6 hover:border-accent/50 transition-colors"
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-micro uppercase tracking-wider text-accent font-mono">
-                    {project.category}
-                  </span>
-                  <span className="text-micro text-foreground/30">•</span>
-                  <span className="text-micro text-foreground/50 font-mono">{project.year}</span>
-                </div>
-                <h3 className="text-body font-sans font-semibold mb-2 group-hover:text-accent transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-sm text-foreground/60 mb-4 line-clamp-2">
-                  {project.context}
-                </p>
-                {/* Stack chips */}
-                <div className="flex flex-wrap gap-1.5 mb-4">
-                  {project.stack.slice(0, 4).map((tech) => (
-                    <span
-                      key={tech}
-                      className="text-micro px-2 py-0.5 bg-zinc-800 border border-border/30 text-foreground/60 font-mono"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                {/* Outcomes */}
-                <ul className="space-y-1.5 mb-5 text-sm text-foreground/70">
-                  {project.outcomes.slice(0, 2).map((outcome, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <span className="text-accent mt-1">→</span>
-                      <span>{outcome}</span>
-                    </li>
-                  ))}
-                </ul>
-                {/* Actions */}
-                <div className="flex gap-2 pt-3 border-t border-border/30">
-                  <Link
-                    href={`/vault?project=${project.id}`}
-                    className="flex-1 text-center text-micro uppercase tracking-wider py-2 border border-accent/50 text-accent hover:bg-accent/10 transition-colors font-mono"
-                  >
-                    Open in Vault
-                  </Link>
-                  <Link
-                    href={`/projects/${project.id}`}
-                    className="flex-1 text-center text-micro uppercase tracking-wider py-2 border border-border/50 text-foreground/70 hover:border-foreground/50 hover:text-foreground transition-colors font-mono"
-                  >
-                    Case Study
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
         </div>
-      </section>
 
-      {/* Proof Strip */}
-      <section className="py-10 px-6 md:px-12 border-b border-border/30 bg-zinc-900/30">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div>
-              <p className="text-display font-sans font-bold text-accent">9</p>
-              <p className="text-micro uppercase tracking-wider text-foreground/50 font-mono">Services Running</p>
-            </div>
-            <div>
-              <p className="text-display font-sans font-bold text-accent">~30%</p>
-              <p className="text-micro uppercase tracking-wider text-foreground/50 font-mono">Faster Reviews</p>
-            </div>
-            <div>
-              <p className="text-display font-sans font-bold text-accent">6+</p>
-              <p className="text-micro uppercase tracking-wider text-foreground/50 font-mono">Projects Shipped</p>
-            </div>
-            <div>
-              <p className="text-display font-sans font-bold text-accent">4</p>
-              <p className="text-micro uppercase tracking-wider text-foreground/50 font-mono">Markets Launched</p>
-            </div>
-          </div>
-        </div>
-      </section>
+        {/* Project Cards */}
+        {topProjects.map((project, index) => (
+          <PalantirCard
+            key={project.id}
+            index={index + 1}
+            title={project.title}
+            subtitle={`${project.role}, ${project.timeframe}`}
+            description={project.outcomes[0] || project.context}
+            href={`/projects/${project.id}`}
+            imageSrc={project.media?.[0]?.src}
+            imageAlt={project.title}
+          />
+        ))}
 
-      {/* Experience Timeline */}
-      <section className="py-12 px-6 md:px-12 border-b border-border/30">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-label uppercase tracking-widest text-foreground/50 mb-8 font-mono flex items-center gap-2">
-            <span className="w-2 h-2 bg-accent rounded-full" />
-            EXPERIENCE
-          </h2>
-          <div className="space-y-6">
-            {[
-              {
-                role: 'AI/ML Intern',
-                org: 'Government of Ontario — Enterprise Architecture Office',
-                period: 'May – Dec 2025',
-                bullets: [
-                  'Product owner for internal AI-assisted architecture workflow tool — owned scope, roadmap, Jira backlog, and release planning',
-                  'Reduced architecture review cycle time by ~30% across 3+ branches',
-                  'Built Power BI / Microsoft Fabric leadership dashboard for portfolio governance',
-                  'Integrated Azure AI Foundry model for automated document drafting and classification',
-                ],
-              },
-              {
-                role: 'Product Manager Intern',
-                org: 'BeautyNBrushes',
-                period: 'Jan – Apr 2026',
-                bullets: [
-                  'Supported 2.0 relaunch across 4 international markets (Canada, US, Ghana, Nigeria)',
-                  'Owned backlog: 8+ core workflows including onboarding, booking, payments, disputes, and policies',
-                  'Led UAT and release QA for critical sprint deliverables across client + provider experiences',
-                  'Produced market and competitor research across 4 regions for roadmap and GTM planning',
-                ],
-              },
-              {
-                role: 'Marketing Lead',
-                org: 'Google Developer Group',
-                period: 'Jan – Mar 2026',
-                bullets: [
-                  'Led go-to-market planning for campus events with campaign strategy and monthly content calendar',
-                  'Tracked engagement KPIs and refined messaging to improve event reach and participation',
-                ],
-              },
-            ].map((exp, i) => (
-              <div key={i} className="border border-border/50 bg-zinc-900/30 p-5 hover:border-accent/20 transition-colors">
-                <div className="flex flex-col md:flex-row md:items-baseline md:justify-between mb-3 gap-1">
-                  <div>
-                    <span className="text-accent font-mono text-sm font-semibold">{exp.role}</span>
-                    <span className="text-foreground/30 mx-2">·</span>
-                    <span className="text-foreground/70 text-sm">{exp.org}</span>
-                  </div>
-                  <span className="text-micro text-foreground/50 font-mono">{exp.period}</span>
-                </div>
-                <ul className="space-y-1.5">
-                  {exp.bullets.map((b, j) => (
-                    <li key={j} className="text-sm text-foreground/60 flex items-start gap-2">
-                      <span className="text-accent/60 mt-1.5 flex-shrink-0">▸</span>
-                      <span>{b}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact CTA */}
-      <section id="contact-cta" className="py-16 px-6 md:px-12">
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-body font-sans font-semibold mb-3">Let&apos;s build something.</h2>
-          <p className="text-sm text-foreground/60 mb-8 max-w-md mx-auto">
-            I&apos;m graduating April 2026 and looking for full-time roles in AI/ML engineering, 
-            product engineering, or infrastructure. Based in Toronto, open to remote and hybrid.
-          </p>
-          <ContactPanel />
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-border/30 py-6 px-6 md:px-12">
-        <div className="max-w-5xl mx-auto flex justify-between items-center text-micro text-foreground/40 font-mono">
-          <span>© 2026 Aksharajsinh Parmar</span>
-          <Link href="/vault" className="hover:text-accent transition-colors">
-            Enter 3D Vault →
+        {/* View All Link */}
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-12 border-b border-border/20">
+          <Link
+            href="/vault"
+            className="inline-flex items-center gap-2 text-sm text-foreground/50 hover:text-accent transition-colors group"
+          >
+            <span>View all projects in 3D Vault</span>
+            <span className="group-hover:translate-x-1 transition-transform">→</span>
           </Link>
+        </div>
+      </section>
+
+      {/* Metrics Section - Palantir style */}
+      <section className="py-20 md:py-32 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-lg md:text-xl font-sans text-foreground/60 mb-16">
+            Impact Metrics
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-16">
+            <div className="space-y-2">
+              <p className="text-4xl md:text-6xl font-sans font-medium tracking-tight">8ms</p>
+              <p className="text-sm text-foreground/40">Average latency</p>
+            </div>
+            <div className="space-y-2">
+              <p className="text-4xl md:text-6xl font-sans font-medium tracking-tight">50K+</p>
+              <p className="text-sm text-foreground/40">Users served</p>
+            </div>
+            <div className="space-y-2">
+              <p className="text-4xl md:text-6xl font-sans font-medium tracking-tight">99.7%</p>
+              <p className="text-sm text-foreground/40">System uptime</p>
+            </div>
+            <div className="space-y-2">
+              <p className="text-4xl md:text-6xl font-sans font-medium tracking-tight">10x</p>
+              <p className="text-sm text-foreground/40">Compression ratio</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section - Palantir style */}
+      <section id="contact" className="py-20 md:py-32 px-6 md:px-12 border-t border-border/20">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-16">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-sans font-medium tracking-tight mb-6">
+                Let&apos;s build something together.
+              </h2>
+              <p className="text-foreground/50 leading-relaxed max-w-md">
+                I&apos;m open to full-time roles, contract work, and interesting collaborations.
+                Currently based in [Location] and available for remote work.
+              </p>
+            </div>
+            <div className="flex flex-col justify-center">
+              <ContactPanel />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer - Minimal */}
+      <footer className="py-8 px-6 md:px-12 border-t border-border/10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-foreground/30">
+          <span className="font-mono">© 2025 BLACKBOX_OS</span>
+          <div className="flex items-center gap-6">
+            <Link href="/vault" className="hover:text-foreground transition-colors">
+              3D Vault
+            </Link>
+            <Link href="/labs" className="hover:text-foreground transition-colors">
+              Labs
+            </Link>
+            <Link href="/boot" className="hover:text-foreground transition-colors">
+              Boot
+            </Link>
+          </div>
         </div>
       </footer>
 

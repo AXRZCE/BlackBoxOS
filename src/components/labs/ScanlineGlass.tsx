@@ -100,12 +100,7 @@ export function ScanlineGlass() {
           max="100"
           value={intensity}
           onChange={(e) => setIntensity(Number(e.target.value))}
-          className="w-full h-1 bg-border/50 rounded-full appearance-none cursor-pointer
-            [&::-webkit-slider-thumb]:appearance-none
-            [&::-webkit-slider-thumb]:w-3
-            [&::-webkit-slider-thumb]:h-3
-            [&::-webkit-slider-thumb]:rounded-full
-            [&::-webkit-slider-thumb]:bg-accent"
+          className="w-full h-1 bg-border/50 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-accent"
           aria-label="Scanline intensity"
         />
         <button

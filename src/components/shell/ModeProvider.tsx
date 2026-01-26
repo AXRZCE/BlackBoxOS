@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { useModeStore } from '@/lib/mode-store';
 import { getStoredMode, isOverdriveUnlocked, applyMode } from '@/lib/mode';
 import { terminalLog, LOG_MESSAGES } from '@/lib/terminal';
+import { CrosshairCursor } from './CrosshairCursor';
 
 /**
  * ModeProvider - Hydrates mode state from localStorage and applies to DOM
@@ -43,6 +44,11 @@ export function ModeProvider({ children }: { children: React.ReactNode }) {
     return unsubscribe;
   }, []);
 
-  return <>{children}</>;
+  return (
+    <>
+      <CrosshairCursor />
+      {children}
+    </>
+  );
 }
 

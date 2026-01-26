@@ -65,11 +65,6 @@ export function ParticleField({ disabled = false }: ParticleFieldProps) {
       const rect = canvas.getBoundingClientRect();
       ctx.clearRect(0, 0, rect.width, rect.height);
 
-      // Get accent color from CSS
-      const accentColor = getComputedStyle(document.documentElement)
-        .getPropertyValue('--accent')
-        .trim();
-
       particlesRef.current.forEach((p) => {
         // Calculate distance from mouse
         const dx = mouseRef.current.x - p.x;
@@ -96,10 +91,10 @@ export function ParticleField({ disabled = false }: ParticleFieldProps) {
         p.x += p.vx;
         p.y += p.vy;
 
-        // Draw particle
+        // Draw particle - use electric blue color directly
         ctx.beginPath();
         ctx.arc(p.x, p.y, PARTICLE_SIZE, 0, Math.PI * 2);
-        ctx.fillStyle = `oklch(${accentColor} / 0.6)`;
+        ctx.fillStyle = 'rgba(59, 130, 246, 0.7)'; // Electric blue #3b82f6
         ctx.fill();
       });
 
@@ -107,6 +102,9 @@ export function ParticleField({ disabled = false }: ParticleFieldProps) {
     };
 
     animate();
+
+    // Handle resize
+    window.addEventListener('resize', resize);
 
     // Track usage once
     if (!trackedRef.current) {
@@ -116,6 +114,7 @@ export function ParticleField({ disabled = false }: ParticleFieldProps) {
 
     return () => {
       cancelAnimationFrame(animationRef.current);
+      window.removeEventListener('resize', resize);
     };
   }, [disabled, initParticles]);
 

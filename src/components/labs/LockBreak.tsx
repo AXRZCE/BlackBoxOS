@@ -29,6 +29,18 @@ export function LockBreak() {
     }
   }, []);
 
+  const completeDecrypt = useCallback(() => {
+    setDecrypted(true);
+    // Pick a random message, or unlock heist if not already
+    if (!heistUnlocked) {
+      unlockHeist();
+      setMessage('HEIST MODE UNLOCKED');
+      track({ type: 'heist_unlocked', source: 'lock_break' });
+    } else {
+      setMessage(MESSAGES[Math.floor(Math.random() * MESSAGES.length)]);
+    }
+  }, [heistUnlocked, unlockHeist]);
+
   const startDecrypt = useCallback(() => {
     if (decrypted) return;
 
@@ -37,21 +49,14 @@ export function LockBreak() {
         const next = prev + (100 / (DECRYPT_DURATION / 50));
         if (next >= 100) {
           clearInterval(intervalRef.current!);
-          setDecrypted(true);
-          // Pick a random message, or unlock heist if not already
-          if (!heistUnlocked) {
-            unlockHeist();
-            setMessage('HEIST MODE UNLOCKED');
-            track({ type: 'heist_unlocked', source: 'lock_break' });
-          } else {
-            setMessage(MESSAGES[Math.floor(Math.random() * MESSAGES.length)]);
-          }
+          // Schedule completion outside of setState
+          setTimeout(completeDecrypt, 0);
           return 100;
         }
         return next;
       });
     }, 50);
-  }, [decrypted, heistUnlocked, unlockHeist]);
+  }, [decrypted, completeDecrypt]);
 
   const stopDecrypt = useCallback(() => {
     if (intervalRef.current) {
