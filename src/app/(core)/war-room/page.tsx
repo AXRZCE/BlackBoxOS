@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { getTopProjects } from '@/data/projects';
 import { MissionChecklist } from '@/components/shell/MissionChecklist';
 import { ContactPanel } from '@/components/shell/ContactPanel';
+import { MissionTracker } from '@/components/shell/MissionTracker';
+import { ContinueButton } from '@/components/shell/ContinueButton';
 
 export const metadata: Metadata = {
   title: 'War Room | BLACKBOX OS',
@@ -30,6 +32,12 @@ export default function WarRoomPage() {
           </p>
         </div>
       </header>
+
+      {/* Track war room visit */}
+      <MissionTracker event="visited_war_room" />
+
+      {/* Continue from last project */}
+      <ContinueButton />
 
       {/* Top 3 Projects */}
       <section className="py-12 px-6 md:px-12 border-b border-border/30">

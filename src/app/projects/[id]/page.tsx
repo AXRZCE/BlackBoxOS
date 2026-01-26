@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { projects } from '@/data/projects';
 import Link from 'next/link';
+import { MissionTracker } from '@/components/shell/MissionTracker';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -58,6 +59,9 @@ export default async function ProjectPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Track project view */}
+      <MissionTracker event="opened_project" projectId={project.id} />
+
       {/* Header */}
       <header className="border-b border-border/50 bg-background/95 backdrop-blur sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -143,7 +147,7 @@ export default async function ProjectPage({ params }: PageProps) {
             )}
 
             {project.proof && project.proof.length > 0 && (
-              <Section title="PROOF & ARTIFACTS">
+              <Section title="PROOF & ARTIFACTS" id="proof-section">
                 <div className="flex flex-wrap gap-3">
                   {project.proof.map((item, i) => (
                     <a
@@ -239,9 +243,9 @@ export default async function ProjectPage({ params }: PageProps) {
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, children, id }: { title: string; children: React.ReactNode; id?: string }) {
   return (
-    <div>
+    <div id={id}>
       <h2 className="text-label text-foreground/50 mb-3">{title}</h2>
       {children}
     </div>

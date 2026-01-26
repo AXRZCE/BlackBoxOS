@@ -114,6 +114,8 @@ export const projects: Project[] = [
     proof: [
       { type: 'link', label: 'Research Paper', href: '#' },
       { type: 'link', label: 'GitHub Repository', href: '#' },
+      { type: 'image', label: 'Dashboard Screenshot', href: '/proof/project-1/dashboard.png' },
+      { type: 'image', label: 'Latency Metrics', href: '/proof/project-1/latency-metrics.png' },
     ],
     highlights: [
       'Designed transformer architecture for temporal signal processing',
@@ -159,6 +161,8 @@ export const projects: Project[] = [
     ],
     proof: [
       { type: 'link', label: 'Architecture Docs', href: '#' },
+      { type: 'image', label: 'Network Topology', href: '/proof/project-2/network-topology.png' },
+      { type: 'image', label: 'Latency Map', href: '/proof/project-2/latency-map.png' },
     ],
     highlights: [
       'Designed fault-tolerant mesh topology from scratch',
@@ -206,6 +210,8 @@ export const projects: Project[] = [
     proof: [
       { type: 'link', label: 'Live Demo', href: '#' },
       { type: 'link', label: 'Documentation', href: '#' },
+      { type: 'image', label: 'Synthesizer UI', href: '/proof/project-3/synthesizer-ui.png' },
+      { type: 'image', label: 'Waveform Editor', href: '/proof/project-3/waveform-editor.png' },
     ],
     highlights: [
       'Built WebAssembly audio DSP for cross-platform support',
@@ -249,6 +255,8 @@ export const projects: Project[] = [
     ],
     proof: [
       { type: 'link', label: 'Privacy Policy', href: '#' },
+      { type: 'image', label: 'Vault Dashboard', href: '/proof/project-4/vault-dashboard.png' },
+      { type: 'image', label: 'Encryption Flow', href: '/proof/project-4/encryption-flow.png' },
     ],
     highlights: [
       'Implemented homomorphic encryption for data operations',
@@ -293,6 +301,8 @@ export const projects: Project[] = [
     proof: [
       { type: 'link', label: 'Case Study', href: '#' },
       { type: 'link', label: 'Demo Video', href: '#' },
+      { type: 'image', label: 'Hand Tracking Demo', href: '/proof/project-5/hand-tracking.png' },
+      { type: 'image', label: '3D Canvas View', href: '/proof/project-5/3d-canvas.png' },
     ],
     highlights: [
       'Built custom hand tracking ML model',
@@ -338,6 +348,8 @@ export const projects: Project[] = [
     proof: [
       { type: 'link', label: 'Benchmarks', href: '#' },
       { type: 'link', label: 'GitHub', href: '#' },
+      { type: 'image', label: 'Query Interface', href: '/proof/project-6/query-interface.png' },
+      { type: 'image', label: 'Performance Metrics', href: '/proof/project-6/performance-metrics.png' },
     ],
     highlights: [
       'Designed LSM-tree with time-partitioning',

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   CommandDialog,
   CommandEmpty,
@@ -19,6 +20,7 @@ import { track } from '@/lib/telemetry';
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const router = useRouter();
   const setSelectedProjectId = useVaultStore((state) => state.setSelectedProjectId);
   const clearSelection = useVaultStore((state) => state.clearSelection);
   const toggleWireframe = useVaultStore((state) => state.toggleWireframe);
@@ -223,6 +225,39 @@ export function CommandPalette() {
               )}
             </CommandItem>
           )}
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="Navigation">
+          <CommandItem onSelect={() => {
+            track({ type: 'command_execute', command: 'open_war_room' });
+            router.push('/war-room');
+            setOpen(false);
+          }}>
+            <span>Open War Room</span>
+          </CommandItem>
+          <CommandItem onSelect={() => {
+            track({ type: 'command_execute', command: 'open_vault' });
+            router.push('/vault');
+            setOpen(false);
+          }}>
+            <span>Open Vault</span>
+          </CommandItem>
+          <CommandItem onSelect={() => {
+            track({ type: 'command_execute', command: 'open_boot' });
+            router.push('/boot');
+            setOpen(false);
+          }}>
+            <span>Open Boot Screen</span>
+          </CommandItem>
+          <CommandItem onSelect={() => {
+            track({ type: 'command_execute', command: 'open_labs' });
+            router.push('/labs');
+            setOpen(false);
+          }}>
+            <span>Open Labs</span>
+          </CommandItem>
         </CommandGroup>
 
         <CommandSeparator />

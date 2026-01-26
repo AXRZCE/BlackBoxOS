@@ -11,26 +11,33 @@ interface ChecklistItem {
   action?: string;
 }
 
+// 5-step checklist per M6 spec
 const CHECKLIST_ITEMS: ChecklistItem[] = [
   {
-    id: 'identity',
-    label: 'Who I am',
-    description: 'Product-minded engineer focused on AI/ML and real-time systems',
+    id: 'visited_war_room',
+    label: 'Read War Room',
+    description: 'Understand who I am and what I build',
   },
   {
-    id: 'top-project',
-    label: 'See top project',
-    description: 'Neural Interface — 8ms latency, 95% accuracy',
-    href: '/vault?project=project-1',
+    id: 'entered_vault',
+    label: 'Enter Vault',
+    description: 'Experience the 3D project gallery',
+    href: '/vault',
   },
   {
-    id: 'case-study',
-    label: 'Read a case study',
-    description: 'Deep dive into technical decisions and outcomes',
+    id: 'opened_project',
+    label: 'Open a Project',
+    description: 'Explore a detailed case study',
     href: '/projects/project-1',
   },
   {
-    id: 'contact',
+    id: 'viewed_proof',
+    label: 'View Proof',
+    description: 'See screenshots and artifacts',
+    action: 'scroll-to-proof',
+  },
+  {
+    id: 'clicked_contact',
     label: 'Get in touch',
     description: 'Email, LinkedIn, or grab my resume',
     action: 'scroll-to-contact',
@@ -85,6 +92,16 @@ function updateChecked(id: string, value: boolean): void {
   checklistListeners.forEach((l) => l());
 }
 
+// Export function to mark checklist items complete from other components
+export function markChecklistComplete(id: string): void {
+  if (typeof window === 'undefined') return;
+  initializeFromStorage();
+  if (!cachedChecked[id]) {
+    updateChecked(id, true);
+    track({ type: 'mission_checklist_item', item: id, checked: true });
+  }
+}
+
 // Mounting state external store (avoids setState in useEffect)
 const mountListeners = new Set<() => void>();
 let isMountedState = false;
@@ -129,6 +146,11 @@ export function MissionChecklist() {
       const contactSection = document.getElementById('contact-cta');
       if (contactSection) {
         contactSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else if (item.action === 'scroll-to-proof') {
+      const proofSection = document.getElementById('proof-section');
+      if (proofSection) {
+        proofSection.scrollIntoView({ behavior: 'smooth' });
       }
     }
   }, [handleCheck]);

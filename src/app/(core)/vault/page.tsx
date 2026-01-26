@@ -9,6 +9,7 @@ import { CommandPalette } from '@/components/shell/CommandPalette';
 import { MobileProjectList } from '@/components/shell/MobileProjectList';
 import { MobileListTrigger } from '@/components/shell/MobileListTrigger';
 import { Reticle } from '@/components/shell/Reticle';
+import { MissionTracker } from '@/components/shell/MissionTracker';
 
 const VaultCanvas = dynamic(
   () => import('@/components/three/VaultCanvas'),
@@ -18,6 +19,9 @@ const VaultCanvas = dynamic(
 export default function VaultPage() {
   return (
     <VaultScrollShell>
+      {/* Track vault entry */}
+      <MissionTracker event="entered_vault" />
+
       {/* Deep linking handler */}
       <Suspense fallback={null}>
         <VaultDeepLink />
