@@ -18,8 +18,12 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BLACKBOX OS",
-  description: "3D Portfolio - Project Vault",
+  metadataBase: new URL('https://blackbox-os.vercel.app'),
+  title: "Aksharajsinh Parmar | Portfolio",
+  description: "Product-minded AI/ML engineer. Building autonomous AI infrastructure, multimodal platforms, and end-to-end systems.",
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({

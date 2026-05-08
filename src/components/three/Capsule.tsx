@@ -91,10 +91,11 @@ export function Capsule({ project, position, rotation }: CapsuleProps) {
     }
   };
 
-  // Determine colors based on state
+  // Determine colors based on state and project color
   const isHighlighted = hovered || isSelected;
-  const baseColor = wireframe ? '#ffffff' : (isHighlighted ? '#3b82f6' : '#1a1a1a');
-  const emissiveColor = isHighlighted ? '#3b82f6' : '#000000';
+  const projectColor = project.color || '#3b82f6';
+  const baseColor = wireframe ? '#ffffff' : (isHighlighted ? projectColor : '#1a1a1a');
+  const emissiveColor = isHighlighted ? projectColor : '#000000';
 
   return (
     <group
@@ -132,10 +133,11 @@ export function Capsule({ project, position, rotation }: CapsuleProps) {
             font-mono text-center whitespace-nowrap
             border transition-all duration-200
             ${isHighlighted
-              ? 'bg-accent/20 border-accent text-white'
+              ? 'border-accent text-white'
               : 'bg-background/80 border-border text-foreground/70'
             }
           `}
+          style={isHighlighted ? { borderColor: projectColor, backgroundColor: `${projectColor}15` } : undefined}
         >
           <div className="text-xs font-medium tracking-tight">
             {project.title}

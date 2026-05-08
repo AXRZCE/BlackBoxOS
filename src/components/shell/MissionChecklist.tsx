@@ -28,7 +28,7 @@ const CHECKLIST_ITEMS: ChecklistItem[] = [
     id: 'opened_project',
     label: 'Open a Project',
     description: 'Explore a detailed case study',
-    href: '/projects/project-1',
+    href: '/projects/clawbot',
   },
   {
     id: 'viewed_proof',

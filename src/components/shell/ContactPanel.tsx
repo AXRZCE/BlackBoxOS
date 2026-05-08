@@ -10,11 +10,11 @@ interface ContactPanelProps {
   showPrimaryCta?: boolean;
 }
 
-// Contact info - update these with your real details
+// Contact info
 const CONTACT = {
-  email: 'hello@example.com',
-  github: 'https://github.com/example',
-  linkedin: 'https://linkedin.com/in/example',
+  email: 'aksharaj.asp.15@gmail.com',
+  github: 'https://github.com/AXRZCE',
+  linkedin: 'https://linkedin.com/in/aksharajsinh',
   resume: '/resume.pdf',
 };
 
