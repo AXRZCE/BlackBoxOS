@@ -20,15 +20,15 @@ export default function WarRoomPage() {
       <header className="border-b border-border/50 py-12 px-6 md:px-12">
         <div className="max-w-5xl mx-auto">
           <p className="text-micro uppercase tracking-widest text-foreground/50 mb-2 font-mono">
-            {/* Tactical style prefix */}
             {'// WAR ROOM — TACTICAL BRIEFING'}
           </p>
           <h1 className="text-display font-sans font-bold tracking-tight mb-3">
-            BLACKBOX<span className="text-accent">_</span>OS
+            Aksharajsinh<span className="text-accent">.</span>Parmar
           </h1>
           <p className="text-body text-foreground/70 max-w-xl">
-            Product-minded engineer building AI/ML systems, real-time infrastructure, 
-            and creative tools. I ship things that work.
+            Product-minded AI/ML engineer and builder. I design and ship end-to-end systems — 
+            from autonomous AI infrastructure to multimodal creative platforms. 
+            Graduating Seneca Polytechnic, April 2026. Open to full-time roles.
           </p>
         </div>
       </header>
@@ -111,20 +111,20 @@ export default function WarRoomPage() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
-              <p className="text-display font-sans font-bold text-accent">8ms</p>
-              <p className="text-micro uppercase tracking-wider text-foreground/50 font-mono">Latency</p>
+              <p className="text-display font-sans font-bold text-accent">9</p>
+              <p className="text-micro uppercase tracking-wider text-foreground/50 font-mono">Services Running</p>
             </div>
             <div>
-              <p className="text-display font-sans font-bold text-accent">50K+</p>
-              <p className="text-micro uppercase tracking-wider text-foreground/50 font-mono">Users</p>
+              <p className="text-display font-sans font-bold text-accent">~30%</p>
+              <p className="text-micro uppercase tracking-wider text-foreground/50 font-mono">Faster Reviews</p>
             </div>
             <div>
-              <p className="text-display font-sans font-bold text-accent">99.7%</p>
-              <p className="text-micro uppercase tracking-wider text-foreground/50 font-mono">Uptime</p>
+              <p className="text-display font-sans font-bold text-accent">6+</p>
+              <p className="text-micro uppercase tracking-wider text-foreground/50 font-mono">Projects Shipped</p>
             </div>
             <div>
-              <p className="text-display font-sans font-bold text-accent">10x</p>
-              <p className="text-micro uppercase tracking-wider text-foreground/50 font-mono">Compression</p>
+              <p className="text-display font-sans font-bold text-accent">4</p>
+              <p className="text-micro uppercase tracking-wider text-foreground/50 font-mono">Markets Launched</p>
             </div>
           </div>
         </div>
@@ -133,9 +133,10 @@ export default function WarRoomPage() {
       {/* Contact CTA */}
       <section id="contact-cta" className="py-16 px-6 md:px-12">
         <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-body font-sans font-semibold mb-3">Ready to talk?</h2>
+          <h2 className="text-body font-sans font-semibold mb-3">Let&apos;s build something.</h2>
           <p className="text-sm text-foreground/60 mb-8 max-w-md mx-auto">
-            I&apos;m open to full-time roles, contract work, and interesting collaborations.
+            I&apos;m graduating April 2026 and looking for full-time roles in AI/ML engineering, 
+            product engineering, or infrastructure. Based in Toronto, open to remote and hybrid.
           </p>
           <ContactPanel />
         </div>
@@ -144,7 +145,7 @@ export default function WarRoomPage() {
       {/* Footer */}
       <footer className="border-t border-border/30 py-6 px-6 md:px-12">
         <div className="max-w-5xl mx-auto flex justify-between items-center text-micro text-foreground/40 font-mono">
-          <span>© 2025 BLACKBOX_OS</span>
+          <span>© 2026 Aksharajsinh Parmar</span>
           <Link href="/vault" className="hover:text-accent transition-colors">
             Enter 3D Vault →
           </Link>
