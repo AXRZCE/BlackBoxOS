@@ -26,9 +26,10 @@ export default function WarRoomPage() {
             Aksharajsinh<span className="text-accent">.</span>Parmar
           </h1>
           <p className="text-body text-foreground/70 max-w-xl">
-            Product-minded AI/ML engineer and builder. I design and ship end-to-end systems — 
-            from autonomous AI infrastructure to multimodal creative platforms. 
-            Graduating Seneca Polytechnic, April 2026. Open to full-time roles.
+            Product &amp; AI Analyst with 1+ year of experience turning workflows into AI-assisted tools, 
+            dashboards, and sprint-delivered features. I build end-to-end — from autonomous AI infrastructure 
+            to multimodal platforms and prediction market systems. Graduating Seneca Polytechnic, April 2026. 
+            Open to full-time roles in AI/ML, product engineering, and infrastructure.
           </p>
         </div>
       </header>
@@ -126,6 +127,70 @@ export default function WarRoomPage() {
               <p className="text-display font-sans font-bold text-accent">4</p>
               <p className="text-micro uppercase tracking-wider text-foreground/50 font-mono">Markets Launched</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Experience Timeline */}
+      <section className="py-12 px-6 md:px-12 border-b border-border/30">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-label uppercase tracking-widest text-foreground/50 mb-8 font-mono flex items-center gap-2">
+            <span className="w-2 h-2 bg-accent rounded-full" />
+            EXPERIENCE
+          </h2>
+          <div className="space-y-6">
+            {[
+              {
+                role: 'AI/ML Intern',
+                org: 'Government of Ontario — Enterprise Architecture Office',
+                period: 'May – Dec 2025',
+                bullets: [
+                  'Product owner for internal AI-assisted architecture workflow tool — owned scope, roadmap, Jira backlog, and release planning',
+                  'Reduced architecture review cycle time by ~30% across 3+ branches',
+                  'Built Power BI / Microsoft Fabric leadership dashboard for portfolio governance',
+                  'Integrated Azure AI Foundry model for automated document drafting and classification',
+                ],
+              },
+              {
+                role: 'Product Manager Intern',
+                org: 'BeautyNBrushes',
+                period: 'Jan – Apr 2026',
+                bullets: [
+                  'Supported 2.0 relaunch across 4 international markets (Canada, US, Ghana, Nigeria)',
+                  'Owned backlog: 8+ core workflows including onboarding, booking, payments, disputes, and policies',
+                  'Led UAT and release QA for critical sprint deliverables across client + provider experiences',
+                  'Produced market and competitor research across 4 regions for roadmap and GTM planning',
+                ],
+              },
+              {
+                role: 'Marketing Lead',
+                org: 'Google Developer Group',
+                period: 'Jan – Mar 2026',
+                bullets: [
+                  'Led go-to-market planning for campus events with campaign strategy and monthly content calendar',
+                  'Tracked engagement KPIs and refined messaging to improve event reach and participation',
+                ],
+              },
+            ].map((exp, i) => (
+              <div key={i} className="border border-border/50 bg-zinc-900/30 p-5 hover:border-accent/20 transition-colors">
+                <div className="flex flex-col md:flex-row md:items-baseline md:justify-between mb-3 gap-1">
+                  <div>
+                    <span className="text-accent font-mono text-sm font-semibold">{exp.role}</span>
+                    <span className="text-foreground/30 mx-2">·</span>
+                    <span className="text-foreground/70 text-sm">{exp.org}</span>
+                  </div>
+                  <span className="text-micro text-foreground/50 font-mono">{exp.period}</span>
+                </div>
+                <ul className="space-y-1.5">
+                  {exp.bullets.map((b, j) => (
+                    <li key={j} className="text-sm text-foreground/60 flex items-start gap-2">
+                      <span className="text-accent/60 mt-1.5 flex-shrink-0">▸</span>
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
       </section>
