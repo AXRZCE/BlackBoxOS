@@ -1,11 +1,13 @@
 import { create } from 'zustand';
-import type { Theme } from './theme';
-import { setStoredTheme, unlockHeist as persistUnlock } from './theme';
+import type { Theme, ColorMode } from './theme';
+import { setStoredTheme, setStoredColorMode, unlockHeist as persistUnlock } from './theme';
 
 interface ThemeState {
   theme: Theme;
+  colorMode: ColorMode;
   heistUnlocked: boolean;
   setTheme: (theme: Theme) => void;
+  setColorMode: (mode: ColorMode) => void;
   toggleTheme: () => void;
   setHeistUnlocked: (unlocked: boolean) => void;
   unlockHeist: () => void;
@@ -13,6 +15,7 @@ interface ThemeState {
 
 export const useThemeStore = create<ThemeState>((set, get) => ({
   theme: 'blackbox',
+  colorMode: 'dark',
   heistUnlocked: false,
 
   setTheme: (theme) => {
@@ -23,6 +26,11 @@ export const useThemeStore = create<ThemeState>((set, get) => ({
     }
     set({ theme });
     setStoredTheme(theme);
+  },
+
+  setColorMode: (mode) => {
+    set({ colorMode: mode });
+    setStoredColorMode(mode);
   },
 
   toggleTheme: () => {

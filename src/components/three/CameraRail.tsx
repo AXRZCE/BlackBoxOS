@@ -3,7 +3,8 @@
 import { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useVaultStore } from '@/lib/store';
-import { getRailPose, getProjectTById } from '@/lib/rail';
+// Use corridor rail instead of spiral rail
+import { getRailPose, getProjectTById } from '@/lib/corridor-rail';
 import * as THREE from 'three';
 
 // Damping factor for smooth camera movement

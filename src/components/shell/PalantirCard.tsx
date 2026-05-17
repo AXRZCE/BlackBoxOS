@@ -9,7 +9,7 @@ interface PalantirCardProps {
   title: string;
   subtitle: string;
   description: string;
-  href: string;
+  href?: string;
   imageSrc?: string;
   imageAlt?: string;
   icon?: 'neural' | 'data' | 'code' | 'cloud' | 'chart' | 'lock';
@@ -91,111 +91,138 @@ export function PalantirCard({
   const iconType = icon || ICON_ORDER[(index - 1) % ICON_ORDER.length];
   const IconSvg = ICONS[iconType];
 
-  return (
-    <Link
-      href={href}
-      className={`group block py-12 md:py-20 border-b border-border/20 relative transition-colors duration-500 ${
-        isHovered ? 'bg-zinc-100 dark:bg-zinc-800/80' : 'bg-transparent'
-      }`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="grid md:grid-cols-12 gap-6 md:gap-8 items-center">
-          {/* Left column: Description + Index */}
-          <div className="md:col-span-3 space-y-4">
-            {/* Subtitle with accent color on hover */}
-            <p
-              className={`text-sm leading-relaxed transition-colors duration-300 ${
-                isHovered ? 'text-accent' : 'text-foreground/60'
-              }`}
-            >
-              {subtitle}
-            </p>
+  const cardClassName = `group block py-16 md:py-24 border-b border-border/30 relative transition-all duration-500 ${
+    isHovered
+      ? 'bg-[#f5f5f5] dark:bg-[#1a1a1a]'
+      : 'bg-transparent'
+  }`;
 
-            {/* Description */}
-            <p className={`text-sm leading-relaxed hidden md:block transition-colors duration-300 ${
-              isHovered ? 'text-zinc-800 dark:text-foreground/70' : 'text-foreground/40'
-            }`}>
-              {description}
-            </p>
+  const cardContent = (
+    <div className="max-w-7xl mx-auto px-6 md:px-12">
+      <div className="grid md:grid-cols-12 gap-6 md:gap-8 items-center">
+        {/* Left column: Description + Index */}
+        <div className="md:col-span-3 space-y-4">
+          {/* Subtitle */}
+          <p
+            className={`text-sm font-medium leading-relaxed transition-colors duration-300 ${
+              isHovered
+                ? 'text-[#1d2433] dark:text-white'
+                : 'text-[#1d2433]/70 dark:text-white/70'
+            }`}
+          >
+            {subtitle}
+          </p>
 
-            {/* Index number */}
-            <p className={`font-mono text-sm transition-colors duration-300 ${
-              isHovered ? 'text-zinc-500 dark:text-foreground/50' : 'text-foreground/30'
-            }`}>{formattedIndex}</p>
+          {/* Description */}
+          <p className={`text-sm leading-relaxed hidden md:block transition-colors duration-300 ${
+            isHovered
+              ? 'text-[#1d2433]/80 dark:text-white/80'
+              : 'text-[#1d2433]/50 dark:text-white/50'
+          }`}>
+            {description}
+          </p>
+
+          {/* Index number */}
+          <p className={`font-mono text-sm transition-colors duration-300 ${
+            isHovered
+              ? 'text-[#1d2433]/60 dark:text-white/60'
+              : 'text-[#1d2433]/40 dark:text-white/40'
+          }`}>{formattedIndex}</p>
+        </div>
+
+        {/* Center column: Icon (default) / Image (on hover) */}
+        <div className="md:col-span-4 relative h-48 md:h-56">
+          {/* Icon - visible when NOT hovered */}
+          <div
+            className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ${
+              isHovered ? 'opacity-0 scale-90' : 'opacity-100 scale-100'
+            }`}
+          >
+            <div className="w-24 h-24 md:w-32 md:h-32 text-[#1d2433]/15 dark:text-white/15">
+              {IconSvg}
+            </div>
           </div>
 
-          {/* Center column: Icon (default) / Image (on hover) */}
-          <div className="md:col-span-4 relative h-48 md:h-56">
-            {/* Icon - visible when NOT hovered */}
+          {/* Image - visible when hovered */}
+          <div
+            className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ease-out ${
+              isHovered
+                ? 'opacity-100 scale-100'
+                : 'opacity-0 scale-95'
+            }`}
+          >
             <div
-              className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ${
-                isHovered ? 'opacity-0 scale-90' : 'opacity-100 scale-100'
-              }`}
-            >
-              <div className="w-24 h-24 md:w-32 md:h-32 text-foreground/10">
-                {IconSvg}
-              </div>
-            </div>
-
-            {/* Image - visible when hovered */}
-            <div
-              className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ease-out ${
+              className={`relative w-full h-full border overflow-hidden transition-all duration-500 ${
                 isHovered
-                  ? 'opacity-100 scale-100'
-                  : 'opacity-0 scale-95'
+                  ? 'shadow-2xl shadow-black/20 dark:shadow-black/40 border-[#1d2433]/20 dark:border-white/20'
+                  : 'border-transparent'
               }`}
             >
-              <div
-                className={`relative w-full h-full border overflow-hidden transition-all duration-500 ${
-                  isHovered
-                    ? 'shadow-2xl shadow-black/20 border-accent/50'
-                    : 'border-transparent'
-                }`}
-              >
-                {imageSrc ? (
-                  <Image
-                    src={imageSrc}
-                    alt={imageAlt}
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center bg-zinc-900">
-                    <div className="w-16 h-16 border border-zinc-700 relative">
-                      <div className="absolute inset-0 border-l border-t border-zinc-600 translate-x-2 translate-y-2" />
-                    </div>
+              {imageSrc ? (
+                <Image
+                  src={imageSrc}
+                  alt={imageAlt}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center bg-[#f0f0f0] dark:bg-zinc-900">
+                  <div className="w-16 h-16 border border-[#1d2433]/20 dark:border-zinc-700 relative">
+                    <div className="absolute inset-0 border-l border-t border-[#1d2433]/10 dark:border-zinc-600 translate-x-2 translate-y-2" />
                   </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Right column: Large title */}
-          <div className="md:col-span-5 relative">
-            <h3
-              className={`text-4xl md:text-6xl lg:text-7xl font-sans font-bold tracking-tighter leading-none transition-all duration-500 ease-out ${
-                isHovered
-                  ? 'text-zinc-900 dark:text-foreground translate-x-4'
-                  : 'text-foreground/70'
-              }`}
-            >
-              {title}
-            </h3>
-
-            {/* Arrow indicator on hover */}
-            <div
-              className={`mt-4 transition-all duration-300 ${
-                isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
-              }`}
-            >
-              <span className="text-accent text-xl">→ View Project</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
+
+        {/* Right column: Large title */}
+        <div className="md:col-span-5 relative">
+          <h3
+            className={`text-5xl md:text-7xl lg:text-8xl font-sans font-black tracking-tight leading-[0.9] transition-all duration-500 ease-out text-[#1d2433] dark:text-white ${
+              isHovered ? 'translate-x-4' : ''
+            }`}
+          >
+            {title}
+          </h3>
+
+          {/* Arrow indicator on hover - only show if href exists */}
+          {href && (
+            <div
+              className={`mt-6 transition-all duration-300 ${
+                isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
+              }`}
+            >
+              <span className="text-[#1d2433]/60 dark:text-white/60 text-lg">→ View Project</span>
+            </div>
+          )}
+        </div>
       </div>
-    </Link>
+    </div>
+  );
+
+  // If href is provided, wrap in Link; otherwise use a div
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className={cardClassName}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return (
+    <div
+      className={cardClassName}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {cardContent}
+    </div>
   );
 }
 

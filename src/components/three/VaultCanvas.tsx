@@ -1,10 +1,12 @@
 'use client';
 
 import { Canvas } from '@react-three/fiber';
-import { Environment, PerspectiveCamera } from '@react-three/drei';
-import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
+import { Environment, PerspectiveCamera, Stars } from '@react-three/drei';
+import { EffectComposer, Bloom, Vignette, ChromaticAberration, Noise, Scanline } from '@react-three/postprocessing';
+import { BlendFunction } from 'postprocessing';
 import { Suspense, useEffect, useState } from 'react';
-import { SpiralCapsules } from './SpiralCapsules';
+import { Corridor } from './Corridor';
+import { ContainmentPods } from './ContainmentPods';
 import { CaseFileSheet } from './CaseFileSheet';
 import { CameraRail } from './CameraRail';
 import { FpsMeter } from './FpsMeter';
@@ -68,13 +70,19 @@ export default function VaultCanvas() {
   return (
     <>
       <Canvas className="w-full h-full" dpr={config.dpr}>
-        <PerspectiveCamera makeDefault position={[0, 2, 8]} fov={60} />
-        <color attach="background" args={['#0a0a0a']} />
+        <PerspectiveCamera makeDefault position={[0, 1.2, 6]} fov={60} />
+        <color attach="background" args={['#000000']} />
 
         {renderLights()}
 
         <Suspense fallback={null}>
-          <SpiralCapsules maxCapsules={config.maxCapsules} />
+          {/* Distant stars for depth */}
+          <Stars radius={100} depth={50} count={1000} factor={2} saturation={0} fade speed={0.5} />
+
+          {/* Containment Corridor environment */}
+          <Corridor />
+          {/* Containment Pods with projects */}
+          <ContainmentPods maxPods={config.maxCapsules} />
           {config.environmentPreset && <Environment preset={config.environmentPreset} />}
         </Suspense>
 
@@ -87,17 +95,32 @@ export default function VaultCanvas() {
         {/* Reticle bridge - projects hover world pos to screen coords */}
         <ReticleBridge />
 
-        {/* Postprocessing effects (conditional based on quality preset) */}
+        {/* Postprocessing effects - enhanced for techno-occult aesthetic */}
         {config.postprocessing && (
           <EffectComposer>
             <Bloom
-              luminanceThreshold={0.9}
+              luminanceThreshold={0.5}
               luminanceSmoothing={0.9}
-              intensity={bloomIntensity}
+              intensity={bloomIntensity * 1.5}
+              mipmapBlur
+              levels={5}
+            />
+            <ChromaticAberration
+              blendFunction={BlendFunction.NORMAL}
+              offset={[0.0008, 0.0008]}
+            />
+            <Scanline
+              blendFunction={BlendFunction.OVERLAY}
+              density={1.2}
+              opacity={0.02}
+            />
+            <Noise
+              blendFunction={BlendFunction.SOFT_LIGHT}
+              opacity={0.04}
             />
             <Vignette
               offset={0.5}
-              darkness={vignetteIntensity}
+              darkness={vignetteIntensity * 0.6}
             />
           </EffectComposer>
         )}

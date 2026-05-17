@@ -1,8 +1,10 @@
 'use client';
 
 export type Theme = 'blackbox' | 'heist';
+export type ColorMode = 'light' | 'dark' | 'system';
 
 const THEME_KEY = 'blackbox-theme';
+const COLOR_MODE_KEY = 'blackbox-color-mode';
 const HEIST_UNLOCKED_KEY = 'blackbox-heist-unlocked';
 
 /**
@@ -23,6 +25,44 @@ export function getStoredTheme(): Theme {
 export function setStoredTheme(theme: Theme): void {
   if (typeof window === 'undefined') return;
   localStorage.setItem(THEME_KEY, theme);
+}
+
+/**
+ * Get the stored color mode from localStorage
+ */
+export function getStoredColorMode(): ColorMode {
+  if (typeof window === 'undefined') return 'dark';
+  const stored = localStorage.getItem(COLOR_MODE_KEY);
+  if (stored === 'light' || stored === 'dark' || stored === 'system') {
+    return stored;
+  }
+  return 'dark';
+}
+
+/**
+ * Store color mode in localStorage
+ */
+export function setStoredColorMode(mode: ColorMode): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(COLOR_MODE_KEY, mode);
+}
+
+/**
+ * Get the system's preferred color scheme
+ */
+export function getSystemColorMode(): 'light' | 'dark' {
+  if (typeof window === 'undefined') return 'dark';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+/**
+ * Resolve the actual color mode (handles 'system' option)
+ */
+export function resolveColorMode(mode: ColorMode): 'light' | 'dark' {
+  if (mode === 'system') {
+    return getSystemColorMode();
+  }
+  return mode;
 }
 
 /**
@@ -47,5 +87,21 @@ export function unlockHeist(): void {
 export function applyTheme(theme: Theme): void {
   if (typeof document === 'undefined') return;
   document.documentElement.setAttribute('data-theme', theme);
+}
+
+/**
+ * Apply color mode to document
+ * Sets both data-mode attribute (for CSS variables) and .dark class (for Tailwind dark: variant)
+ */
+export function applyColorMode(mode: 'light' | 'dark'): void {
+  if (typeof document === 'undefined') return;
+  document.documentElement.setAttribute('data-mode', mode);
+
+  // Toggle .dark class for Tailwind's dark: variant
+  if (mode === 'dark') {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
 }
 

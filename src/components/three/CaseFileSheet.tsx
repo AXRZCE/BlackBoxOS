@@ -59,8 +59,8 @@ export function CaseFileSheet() {
 
   return (
     <Sheet open={!!selectedProjectId} onOpenChange={(open) => !open && handleClose()}>
-      <SheetContent className="w-[90vw] max-w-[800px] bg-background border-border overflow-y-auto">
-        <SheetHeader className="pb-4">
+      <SheetContent className="w-[60vw] min-w-[600px] max-w-[900px] h-full bg-background border-border flex flex-col">
+        <SheetHeader className="flex-shrink-0 px-8 pt-6 pb-4">
           <SheetTitle className="font-sans text-2xl tracking-tight">
             {project.title}
           </SheetTitle>
@@ -69,10 +69,12 @@ export function CaseFileSheet() {
           </SheetDescription>
         </SheetHeader>
 
-        {/* Two-column layout */}
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_200px] gap-6 mt-4">
-          {/* Left column: Story sections */}
-          <div className="space-y-5">
+        {/* Scrollable content area */}
+        <div className="flex-1 overflow-y-auto px-8 pb-8">
+          {/* Two-column layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8">
+            {/* Left column: Story sections */}
+            <div className="space-y-5">
             <Section title="CONTEXT">
               <p className="text-sm text-foreground/80 leading-relaxed">{project.context}</p>
             </Section>
@@ -133,7 +135,7 @@ export function CaseFileSheet() {
           </div>
 
           {/* Right column: Stats & Links */}
-          <div className="space-y-5 md:border-l md:border-border/50 md:pl-5">
+          <div className="space-y-5 lg:border-l lg:border-border/50 lg:pl-6">
             <StatBlock label="ROLE" value={project.role} />
             <StatBlock label="TIMEFRAME" value={project.timeframe} />
 
@@ -208,6 +210,7 @@ export function CaseFileSheet() {
                 </div>
               </div>
             )}
+          </div>
           </div>
         </div>
       </SheetContent>

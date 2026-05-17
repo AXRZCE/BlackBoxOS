@@ -4,24 +4,35 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useThemeStore } from '@/lib/theme-store';
 import { track } from '@/lib/telemetry';
 
-const DECRYPT_DURATION = 3000; // 3 seconds to decrypt
+const DECRYPT_DURATION = 3000;
 const MESSAGES = [
   'ACCESS GRANTED',
   'HEIST MODE UNLOCKED',
   'WELCOME TO THE VAULT',
+  'ENCRYPTION BYPASSED',
+  'FIREWALL DISABLED',
 ];
+
+// Generate random hex characters for the decryption effect
+const generateHex = (length: number) => {
+  return Array.from({ length }, () =>
+    Math.floor(Math.random() * 16).toString(16).toUpperCase()
+  ).join('');
+};
 
 export function LockBreak() {
   const [progress, setProgress] = useState(0);
   const [decrypted, setDecrypted] = useState(false);
   const [message, setMessage] = useState('');
+  const [hexDisplay, setHexDisplay] = useState('0000 0000 0000');
+  const [attempts, setAttempts] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const hexIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const trackedRef = useRef(false);
 
   const heistUnlocked = useThemeStore((s) => s.heistUnlocked);
   const unlockHeist = useThemeStore((s) => s.unlockHeist);
 
-  // Track usage once
   useEffect(() => {
     if (!trackedRef.current) {
       track({ type: 'lab_used', name: 'lock_break' });
@@ -31,7 +42,7 @@ export function LockBreak() {
 
   const completeDecrypt = useCallback(() => {
     setDecrypted(true);
-    // Pick a random message, or unlock heist if not already
+    setHexDisplay('FFFF FFFF FFFF');
     if (!heistUnlocked) {
       unlockHeist();
       setMessage('HEIST MODE UNLOCKED');
@@ -44,12 +55,17 @@ export function LockBreak() {
   const startDecrypt = useCallback(() => {
     if (decrypted) return;
 
+    // Start hex animation
+    hexIntervalRef.current = setInterval(() => {
+      setHexDisplay(`${generateHex(4)} ${generateHex(4)} ${generateHex(4)}`);
+    }, 50);
+
     intervalRef.current = setInterval(() => {
       setProgress((prev) => {
         const next = prev + (100 / (DECRYPT_DURATION / 50));
         if (next >= 100) {
           clearInterval(intervalRef.current!);
-          // Schedule completion outside of setState
+          clearInterval(hexIntervalRef.current!);
           setTimeout(completeDecrypt, 0);
           return 100;
         }
@@ -63,18 +79,24 @@ export function LockBreak() {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
-    if (!decrypted) {
-      setProgress(0);
+    if (hexIntervalRef.current) {
+      clearInterval(hexIntervalRef.current);
+      hexIntervalRef.current = null;
     }
-  }, [decrypted]);
+    if (!decrypted && progress > 0) {
+      setProgress(0);
+      setHexDisplay('0000 0000 0000');
+      setAttempts(a => a + 1);
+    }
+  }, [decrypted, progress]);
 
   const reset = () => {
     setProgress(0);
     setDecrypted(false);
     setMessage('');
+    setHexDisplay('0000 0000 0000');
   };
 
-  // Keyboard support
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
@@ -88,67 +110,99 @@ export function LockBreak() {
     }
   };
 
+  const progressPercent = Math.round(progress);
+  const circumference = 2 * Math.PI * 45;
+  const strokeDashoffset = circumference - (progress / 100) * circumference;
+
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center p-4">
+    <div className="w-full h-full flex flex-col items-center justify-center p-4 bg-gradient-to-b from-[#f5f5f5] to-[#ebebeb] dark:from-[#0a0a0a] dark:to-[#050505] relative overflow-hidden">
+      {/* Background grid */}
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
+          backgroundSize: '20px 20px',
+        }}
+      />
+
       {!decrypted ? (
-        <>
-          {/* Lock icon */}
-          <div className="relative mb-6">
-            <svg
-              width="64"
-              height="64"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-foreground/30"
-            >
-              <rect
-                x="5"
-                y="11"
-                width="14"
-                height="10"
-                rx="2"
+        <div className="relative z-10 flex flex-col items-center">
+          {/* Lock visualization */}
+          <div className="relative w-28 h-28 mb-6">
+            {/* Outer ring - progress */}
+            <svg className="absolute inset-0 -rotate-90" viewBox="0 0 100 100">
+              {/* Background ring */}
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="2"
+                className="text-[#1d2433]/10 dark:text-white/10"
               />
-              <path
-                d="M8 11V7a4 4 0 118 0v4"
+              {/* Progress ring */}
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="3"
                 strokeLinecap="round"
-              />
-            </svg>
-            {/* Progress ring */}
-            <svg
-              className="absolute inset-0 -rotate-90"
-              width="64"
-              height="64"
-              viewBox="0 0 64 64"
-            >
-              <circle
-                cx="32"
-                cy="32"
-                r="28"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="text-border/30"
-              />
-              <circle
-                cx="32"
-                cy="32"
-                r="28"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeDasharray={`${(progress / 100) * 176} 176`}
+                strokeDasharray={circumference}
+                strokeDashoffset={strokeDashoffset}
                 className="text-accent transition-all duration-100"
+                style={{
+                  filter: progress > 0 ? 'drop-shadow(0 0 6px oklch(var(--accent) / 0.5))' : 'none',
+                }}
               />
             </svg>
+
+            {/* Inner lock icon */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className={`transition-transform duration-300 ${progress > 0 ? 'scale-90' : 'scale-100'}`}>
+                <svg
+                  width="40"
+                  height="40"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className={`transition-colors duration-300 ${progress > 50 ? 'text-accent' : 'text-[#1d2433]/40 dark:text-white/40'}`}
+                >
+                  <rect x="5" y="11" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.5" />
+                  <path
+                    d="M8 11V7a4 4 0 118 0v4"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    className={`transition-all duration-500 origin-bottom ${progress > 70 ? 'opacity-50' : 'opacity-100'}`}
+                  />
+                  {/* Keyhole */}
+                  <circle cx="12" cy="15" r="1.5" fill="currentColor" className={progress > 0 ? 'animate-pulse' : ''} />
+                </svg>
+              </div>
+            </div>
+
+            {/* Percentage display */}
+            {progress > 0 && (
+              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px] font-mono text-accent font-bold">
+                {progressPercent}%
+              </div>
+            )}
           </div>
 
-          {/* Progress text */}
-          <div className="text-micro text-foreground/50 mb-4">
-            {progress > 0 ? `DECRYPTING... ${Math.round(progress)}%` : 'HOLD TO DECRYPT'}
+          {/* Hex display */}
+          <div className={`font-mono text-xs tracking-[0.2em] mb-4 transition-colors ${progress > 0 ? 'text-accent' : 'text-[#1d2433]/30 dark:text-white/30'}`}>
+            {hexDisplay}
+          </div>
+
+          {/* Status text */}
+          <div className="text-[10px] font-mono text-[#1d2433]/50 dark:text-white/50 mb-5 h-4">
+            {progress > 0 ? (
+              <span className="text-accent animate-pulse">BYPASSING ENCRYPTION...</span>
+            ) : (
+              <span>HOLD TO INITIATE BREACH</span>
+            )}
           </div>
 
           {/* Hold button */}
@@ -161,32 +215,50 @@ export function LockBreak() {
             onKeyDown={handleKeyDown}
             onKeyUp={handleKeyUp}
             className={`
-              px-6 py-3 border rounded-sm text-label transition-all
-              focus:outline-none focus:ring-2 focus:ring-accent/50
+              relative px-8 py-3 text-[10px] font-mono uppercase tracking-widest transition-all duration-200
+              focus:outline-none focus:ring-2 focus:ring-accent/50 rounded
               ${progress > 0
-                ? 'border-accent bg-accent/20 text-accent'
-                : 'border-border/50 text-foreground/60 hover:border-accent/50'
+                ? 'bg-accent text-white shadow-lg shadow-accent/30'
+                : 'bg-[#1d2433]/5 dark:bg-white/5 text-[#1d2433]/60 dark:text-white/60 hover:bg-[#1d2433]/10 dark:hover:bg-white/10'
               }
             `}
-            aria-label="Hold to decrypt the lock"
           >
-            {progress > 0 ? 'DECRYPTING...' : 'HOLD TO DECRYPT'}
+            {progress > 0 ? '◉ BREACHING' : '○ HOLD TO BREACH'}
           </button>
-        </>
+
+          {/* Attempts counter */}
+          {attempts > 0 && (
+            <div className="mt-4 text-[9px] font-mono text-[#1d2433]/30 dark:text-white/30">
+              FAILED ATTEMPTS: {attempts}
+            </div>
+          )}
+        </div>
       ) : (
-        <>
-          {/* Success state */}
-          <div className="text-center">
-            <div className="text-4xl mb-4">🔓</div>
-            <div className="text-heading text-accent mb-2">{message}</div>
-            <button
-              onClick={reset}
-              className="text-micro text-foreground/40 hover:text-foreground/60 underline"
-            >
-              RESET
-            </button>
+        <div className="relative z-10 text-center">
+          {/* Success animation */}
+          <div className="relative w-20 h-20 mx-auto mb-6">
+            <div className="absolute inset-0 rounded-full bg-accent/20 animate-ping" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="text-accent">
+                <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
           </div>
-        </>
+
+          <div className="text-lg font-mono font-bold text-accent mb-2 tracking-wider">
+            {message}
+          </div>
+          <div className="text-[10px] font-mono text-[#1d2433]/40 dark:text-white/40 mb-6">
+            ENCRYPTION: NEUTRALIZED
+          </div>
+
+          <button
+            onClick={reset}
+            className="text-[10px] font-mono text-[#1d2433]/40 dark:text-white/40 hover:text-accent transition-colors underline underline-offset-4"
+          >
+            RESET LOCK
+          </button>
+        </div>
       )}
     </div>
   );

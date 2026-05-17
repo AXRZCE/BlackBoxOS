@@ -131,8 +131,8 @@ export class FPSMonitor {
   private samples: number[] = [];
   private lowFpsStart: number | null = null;
   
-  readonly threshold = 45;
-  readonly downgradeDuration = 2000; // 2 seconds
+  readonly threshold = 20;
+  readonly downgradeDuration = 7000; // 2 seconds
   
   addSample(fps: number): boolean {
     this.samples.push(fps);

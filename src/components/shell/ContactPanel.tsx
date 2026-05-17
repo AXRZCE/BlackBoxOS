@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import { track } from '@/lib/telemetry';
+import { ResumeModal } from './ResumeModal';
 
 interface ContactPanelProps {
   /** Variant: inline for war-room, compact for overlays */
@@ -14,12 +15,12 @@ interface ContactPanelProps {
 const CONTACT = {
   email: 'aksharaj.asp.15@gmail.com',
   github: 'https://github.com/AXRZCE',
-  linkedin: 'https://linkedin.com/in/aksharajsinh',
-  resume: '/resume.pdf',
+  linkedin: 'https://www.linkedin.com/in/aksharajsinh',
 };
 
 export function ContactPanel({ variant = 'inline', showPrimaryCta = true }: ContactPanelProps) {
   const [copied, setCopied] = useState(false);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   const handleEmailClick = useCallback(() => {
     track({ type: 'contact_click', channel: 'email' });
@@ -35,6 +36,7 @@ export function ContactPanel({ variant = 'inline', showPrimaryCta = true }: Cont
 
   const handleResumeClick = useCallback(() => {
     track({ type: 'contact_click', channel: 'resume' });
+    setIsResumeOpen(true);
   }, []);
 
   const handleCopyEmail = useCallback(async () => {
@@ -51,93 +53,93 @@ export function ContactPanel({ variant = 'inline', showPrimaryCta = true }: Cont
 
   if (variant === 'compact') {
     return (
-      <div className="flex flex-wrap gap-3">
-        <a
-          href={`mailto:${CONTACT.email}`}
-          onClick={handleEmailClick}
-          className="text-micro uppercase tracking-wider text-accent hover:text-accent/80 transition-colors font-mono"
-        >
-          Email
-        </a>
-        <a
-          href={CONTACT.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={handleGitHubClick}
-          className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
-        >
-          GitHub
-        </a>
-        <a
-          href={CONTACT.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={handleLinkedInClick}
-          className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
-        >
-          LinkedIn
-        </a>
-        <a
-          href={CONTACT.resume}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={handleResumeClick}
-          className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
-        >
-          Resume
-        </a>
-      </div>
+      <>
+        <div className="flex flex-wrap gap-3">
+          <a
+            href={`mailto:${CONTACT.email}`}
+            onClick={handleEmailClick}
+            className="text-micro uppercase tracking-wider text-accent hover:text-accent/80 transition-colors font-mono"
+          >
+            Email
+          </a>
+          <a
+            href={CONTACT.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleGitHubClick}
+            className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
+          >
+            GitHub
+          </a>
+          <a
+            href={CONTACT.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleLinkedInClick}
+            className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
+          >
+            LinkedIn
+          </a>
+          <button
+            onClick={handleResumeClick}
+            className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
+          >
+            Resume
+          </button>
+        </div>
+        <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
+      </>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {showPrimaryCta && (
-        <a
-          href={`mailto:${CONTACT.email}`}
-          onClick={handleEmailClick}
-          className="inline-block px-8 py-3 bg-accent text-background font-mono text-label uppercase tracking-wider hover:bg-accent/90 transition-colors"
-        >
-          Get in Touch
-        </a>
-      )}
+    <>
+      <div className="space-y-6">
+        {showPrimaryCta && (
+          <a
+            href={`mailto:${CONTACT.email}`}
+            onClick={handleEmailClick}
+            className="inline-block px-8 py-3 bg-accent text-background font-mono text-label uppercase tracking-wider hover:bg-accent/90 transition-colors"
+          >
+            Get in Touch
+          </a>
+        )}
 
-      <div className="flex flex-wrap justify-center gap-6">
-        <a
-          href={CONTACT.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={handleGitHubClick}
-          className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
-        >
-          GitHub
-        </a>
-        <a
-          href={CONTACT.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={handleLinkedInClick}
-          className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
-        >
-          LinkedIn
-        </a>
-        <a
-          href={CONTACT.resume}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={handleResumeClick}
-          className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
-        >
-          Resume PDF
-        </a>
-        <button
-          onClick={handleCopyEmail}
-          className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
-        >
-          {copied ? '✓ Copied' : 'Copy Email'}
-        </button>
+        <div className="flex flex-wrap justify-center gap-6">
+          <a
+            href={CONTACT.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleGitHubClick}
+            className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
+          >
+            GitHub
+          </a>
+          <a
+            href={CONTACT.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleLinkedInClick}
+            className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
+          >
+            LinkedIn
+          </a>
+          <button
+            onClick={handleResumeClick}
+            className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
+          >
+            Resume
+          </button>
+          <button
+            onClick={handleCopyEmail}
+            className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
+          >
+            {copied ? '✓ Copied' : 'Copy Email'}
+          </button>
+        </div>
       </div>
-    </div>
+      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
+    </>
   );
 }
 

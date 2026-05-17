@@ -1,61 +1,132 @@
 'use client';
 
+import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useVaultStore } from '@/lib/store';
 import { LabCard } from '@/components/labs/LabCard';
-import { ParticleField } from '@/components/labs/ParticleField';
-import { ScanlineGlass } from '@/components/labs/ScanlineGlass';
-import { LockBreak } from '@/components/labs/LockBreak';
 import { track } from '@/lib/telemetry';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+// Dynamic imports for 3D components (no SSR)
+const GravitationalVortex = dynamic(() => import('@/components/labs/GravitationalVortex'), { ssr: false });
+const MorphingBlob = dynamic(() => import('@/components/labs/MorphingBlob'), { ssr: false });
+const NeuralNetwork = dynamic(() => import('@/components/labs/NeuralNetwork'), { ssr: false });
 
 export default function LabsPage() {
   const qualityPreset = useVaultStore((s) => s.qualityPreset);
   const isLowSpec = qualityPreset === 'low';
+  const [glitchText, setGlitchText] = useState('LABS');
 
   useEffect(() => {
     track({ type: 'labs_open' });
   }, []);
 
+  // Glitch effect on title
+  useEffect(() => {
+    const chars = 'LABS';
+    const glitchChars = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`';
+
+    const glitch = () => {
+      const shouldGlitch = Math.random() > 0.7;
+      if (shouldGlitch) {
+        let result = '';
+        for (let i = 0; i < chars.length; i++) {
+          result += Math.random() > 0.5 ? glitchChars[Math.floor(Math.random() * glitchChars.length)] : chars[i];
+        }
+        setGlitchText(result);
+        setTimeout(() => setGlitchText('LABS'), 100);
+      }
+    };
+
+    const interval = setInterval(glitch, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-background p-6 md:p-10">
-      <header className="mb-10">
-        <h1 className="text-display text-foreground mb-2">LABS</h1>
-        <p className="text-body text-foreground/60 max-w-xl">
-          Experimental features and interactive demos. Some experiments may be
-          disabled on low-spec devices for performance.
+    <div className="h-full bg-white dark:bg-black p-4 md:p-6 relative overflow-hidden flex flex-col">
+      {/* Subtle grid background */}
+      <div
+        className="absolute inset-0 opacity-[0.02] dark:opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, currentColor 1px, transparent 1px),
+            linear-gradient(to bottom, currentColor 1px, transparent 1px)
+          `,
+          backgroundSize: '40px 40px',
+        }}
+      />
+
+      {/* Back navigation */}
+      <Link
+        href="/war-room"
+        className="relative inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#1d2433]/50 dark:text-white/50 hover:text-[#1d2433] dark:hover:text-white transition-colors mb-3 group flex-shrink-0"
+      >
+        <span className="group-hover:-translate-x-1 transition-transform">←</span>
+        <span>Exit Labs</span>
+      </Link>
+
+      <header className="mb-4 relative flex-shrink-0">
+        {/* Experiment number badge */}
+        <div className="inline-flex items-center gap-2 mb-2 px-3 py-1 border border-[#1d2433]/10 dark:border-white/10 rounded-full">
+          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#1d2433]/50 dark:text-white/50">
+            3 Active Experiments
+          </span>
+        </div>
+
+        <h1 className="text-xl md:text-2xl font-light tracking-[0.2em] text-[#1d2433] dark:text-white mb-1 font-mono">
+          {glitchText}
+        </h1>
+        <p className="text-xs text-[#1d2433]/60 dark:text-white/60 max-w-md leading-relaxed font-light">
+          Interactive experiments and prototypes. Move your cursor, hold buttons,
+          adjust sliders — everything here responds to your input.
         </p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 relative flex-1 min-h-0">
         <LabCard
-          title="Signal Noise"
-          description="Particle field reacting to cursor movement. Visualizes ambient data flow."
+          title="Gravitational Vortex"
+          description="5,000 particles orbiting a singularity. Click and hold to attract them with gravitational force."
           disabled={isLowSpec}
-          disabledReason="Disabled in LOW mode"
+          disabledReason="WebGL Required"
+          experimentId="EXP-001"
+          status="active"
         >
-          <ParticleField disabled={isLowSpec} />
+          <GravitationalVortex disabled={isLowSpec} />
         </LabCard>
 
         <LabCard
-          title="Scanline Glass"
-          description="Animated scanline overlay with adjustable intensity. Retro CRT aesthetic."
-          disabled={false}
+          title="Morphing Blob"
+          description="Shader-powered procedural geometry. Move your mouse to deform the iridescent surface."
+          disabled={isLowSpec}
+          disabledReason="WebGL Required"
+          experimentId="EXP-002"
+          status="active"
         >
-          <ScanlineGlass />
+          <MorphingBlob disabled={isLowSpec} />
         </LabCard>
 
         <LabCard
-          title="Lock Break"
-          description="Decrypt the lock to reveal a hidden message. Hold to progress."
-          disabled={false}
+          title="Neural Network"
+          description="Interactive 3D neural network visualization. Click nodes to trigger activation propagation."
+          disabled={isLowSpec}
+          disabledReason="WebGL Required"
+          experimentId="EXP-003"
+          status="active"
         >
-          <LockBreak />
+          <NeuralNetwork disabled={isLowSpec} />
         </LabCard>
       </div>
 
-      <footer className="mt-16 pt-6 border-t border-border/30">
-        <p className="text-micro text-foreground/40">
-          BLACKBOX LABS · EXPERIMENTAL · USE AT YOUR OWN RISK
+      <footer className="mt-2 pt-2 border-t border-[#1d2433]/5 dark:border-white/5 flex items-center justify-between flex-shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="w-1.5 h-1.5 rounded-full bg-green-500/60" />
+          <p className="text-[10px] font-mono text-[#1d2433]/40 dark:text-white/40 tracking-widest uppercase">
+            All systems operational
+          </p>
+        </div>
+        <p className="text-[10px] font-mono text-[#1d2433]/30 dark:text-white/30 tracking-widest">
+          v0.1.0-experimental
         </p>
       </footer>
     </div>

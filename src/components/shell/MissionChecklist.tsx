@@ -163,21 +163,21 @@ export function MissionChecklist() {
   if (!isMounted) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 w-72 bg-zinc-900/95 border border-border/50 backdrop-blur-sm shadow-xl shadow-black/50">
+    <div className="fixed bottom-4 right-4 z-50 w-72 bg-white dark:bg-zinc-900 border border-[#1d2433]/20 dark:border-white/20 backdrop-blur-sm shadow-xl shadow-black/10 dark:shadow-black/50">
       {/* Header */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-4 py-3 border-b border-border/30 hover:bg-zinc-800/50 transition-colors"
+        className="w-full flex items-center justify-between px-4 py-3 border-b border-[#1d2433]/10 dark:border-white/10 hover:bg-[#f5f5f5] dark:hover:bg-zinc-800/50 transition-colors"
       >
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-          <span className="text-micro uppercase tracking-wider font-mono text-foreground/80">
+          <span className="text-[10px] uppercase tracking-wider font-mono text-[#1d2433]/80 dark:text-white/80">
             Mission Brief
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-micro font-mono text-accent">{progressPercent}%</span>
-          <span className="text-foreground/40">{isOpen ? '−' : '+'}</span>
+          <span className="text-[10px] font-mono text-accent">{progressPercent}%</span>
+          <span className="text-[#1d2433]/40 dark:text-white/40">{isOpen ? '−' : '+'}</span>
         </div>
       </button>
 
@@ -187,7 +187,7 @@ export function MissionChecklist() {
           {CHECKLIST_ITEMS.map((item) => (
             <div
               key={item.id}
-              className={`group flex items-start gap-3 p-2 border border-transparent hover:border-border/30 hover:bg-zinc-800/30 transition-colors cursor-pointer ${
+              className={`group flex items-start gap-3 p-2 border border-transparent hover:border-[#1d2433]/10 dark:hover:border-white/10 hover:bg-[#f5f5f5] dark:hover:bg-zinc-800/30 transition-colors cursor-pointer ${
                 checked[item.id] ? 'opacity-60' : ''
               }`}
               onClick={() => handleItemClick(item)}
@@ -197,7 +197,7 @@ export function MissionChecklist() {
                 className={`mt-0.5 w-4 h-4 border flex-shrink-0 flex items-center justify-center transition-colors ${
                   checked[item.id]
                     ? 'border-accent bg-accent/20 text-accent'
-                    : 'border-border/50 group-hover:border-accent/50'
+                    : 'border-[#1d2433]/30 dark:border-white/30 group-hover:border-accent/50'
                 }`}
               >
                 {checked[item.id] && (
@@ -212,7 +212,7 @@ export function MissionChecklist() {
                   <a
                     href={item.href}
                     className={`text-sm font-medium block hover:text-accent transition-colors ${
-                      checked[item.id] ? 'line-through text-foreground/50' : 'text-foreground/90'
+                      checked[item.id] ? 'line-through text-[#1d2433]/50 dark:text-white/50' : 'text-[#1d2433]/90 dark:text-white/90'
                     }`}
                     onClick={(e) => e.stopPropagation()}
                   >
@@ -221,13 +221,13 @@ export function MissionChecklist() {
                 ) : (
                   <span
                     className={`text-sm font-medium block ${
-                      checked[item.id] ? 'line-through text-foreground/50' : 'text-foreground/90'
+                      checked[item.id] ? 'line-through text-[#1d2433]/50 dark:text-white/50' : 'text-[#1d2433]/90 dark:text-white/90'
                     }`}
                   >
                     {item.label}
                   </span>
                 )}
-                <p className="text-micro text-foreground/50 mt-0.5 line-clamp-1">
+                <p className="text-[10px] uppercase tracking-wider font-mono text-[#1d2433]/50 dark:text-white/50 mt-0.5 line-clamp-1">
                   {item.description}
                 </p>
               </div>
