@@ -158,7 +158,7 @@ export function HeroMoment() {
           }`}
           style={{ color: 'var(--accent)' }}
         >
-          OVERDRIVE
+          SEE WHAT&apos;S HAPPENING
         </div>
         
         <div 
@@ -167,7 +167,7 @@ export function HeroMoment() {
           }`}
           style={{ color: 'var(--foreground)' }}
         >
-          ALL SYSTEMS ENGAGED
+          DECIDE WHAT HAPPENS NEXT
         </div>
       </div>
       
