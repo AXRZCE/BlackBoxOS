@@ -96,7 +96,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             <Section title="EXPERIENCE">
               <ExperienceItem
                 company="Government of Ontario"
-                role="Software Programmer AI/ML Co-op"
+                role="AI/ML Intern"
                 location="Toronto, ON"
                 date="May 2025 - Dec 2025"
                 bullets={[
@@ -111,7 +111,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                 company="BeautyNBrushes"
                 role="Product Manager Intern"
                 location="Toronto, ON"
-                date="Jan 2026 - Present"
+                date="Jan 2026 – Apr 2026"
                 bullets={[
                   "Backlog Management: Wrote and refined user stories, acceptance criteria, and priorities for a relaunch across client and provider flows (signup, profiles, booking, payments, notifications).",
                   "Quality & Release Execution: Owned UAT/QA for sprint deliverables; logged actionable defects with clear repro steps, validated fixes, and reduced release risk for launch-critical features.",
@@ -122,7 +122,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                 company="Google Developer Group on Campus"
                 role="Marketing Lead"
                 location="Toronto, ON"
-                date="Jan 2026 - Present"
+                date="Jan 2026 – Mar 2026"
                 bullets={[
                   "Go-to-Market: Planned and executed event campaigns (positioning, content, launch timeline, and community promotion) to drive RSVPs and attendance.",
                   "Growth Ops: Built a monthly content calendar and tracked engagement signals to iterate on channel strategy and improve reach."
@@ -143,29 +143,27 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             {/* Projects */}
             <Section title="PROJECTS">
               <ProjectItem
-                name="CompI - Multimodal Creative AI Platform"
+                name="ClawBotV2 — Self-Hosted Autonomous AI Operator"
                 bullets={[
-                  "Developed CompI, a flexible architecture that integrates various multimodal inputs, including text, music, and real-time data, to foster innovation in art generation.",
-                  "Built APIs that facilitate seamless integration of user-generated references (i.e., images, links) to guide and customize AI-generated art styles, promoting user empowerment and creativity.",
-                  "Developed and optimized modules for text-to-image generation and style transfer, utilizing external data sources (i.e., news, weather) to enrich creative outputs.",
-                  "Engineered the platform using Streamlit UI in conjunction with PyTorch, Transformers, and Diffusers, resulting in robust APIs for text-to-image, style transfer, and data handling."
+                  "Built a self-hosted AI operator running on Linux cloud VM using OpenClaw as the agent brain for research, workflow execution, and system inspection.",
+                  "Designed backend workflow layer: FastAPI, Redis/RQ background jobs, Postgres task history, Qdrant vector memory, SearXNG web search — 9-container Docker stack.",
+                  "Added Telegram-based remote control and Cloudflare Tunnel access for secure phone-based operation, monitoring, and report delivery."
                 ]}
               />
               <ProjectItem
-                name="GOTHAM - Ontario Crime Analytics Dashboard (OPS Microsoft Hackathon)"
+                name="Prophet — Simulation-Calibrated Prediction Market System"
                 bullets={[
-                  "Built an end-to-end crime analytics dashboard in Microsoft Fabric and Power BI using 10+ GB of public Statistics Canada data on Ontario police-reported crime.",
-                  "Designed a semantic model (crime, population, calendar, region) and DAX measures for crime rate per 100k, total incidents, adult vs youth, and clearance rates, supporting province-wide and regional analysis.",
-                  "Set up a refreshable pipeline in Fabric Lakehouse so the dashboard updates with new annual crime data, helping justice partners monitor police-reported crime and court intake in one place."
+                  "Built a calibration tool testing whether AI simulation-based forecasts can outperform prediction markets, using Brier scores and false-confidence diagnostics.",
+                  "Built a full validation pipeline: market scanning → seed generation → simulation runs → probability parsing → forecast logging → resolution tracking → calibration reporting.",
+                  "Resolved 22 Track C events; market Brier scores beat simulation scores — proving the framework works and preventing premature trading."
                 ]}
               />
               <ProjectItem
-                name="Forkcast"
+                name="CompI — Multimodal Creative AI Platform"
                 bullets={[
-                  "Building Forkcast, a cross-platform React Native (Expo) mobile app for meal tracking and nutrition consistency, targeting release on Google Play and the Apple App Store.",
-                  "Developed core product flows such as authentication, onboarding, profiles, meal logging, and progress tracking using Firebase (Auth + Firestore) with a clean, responsive UI.",
-                  "Implemented backend guardrails by defining Firestore data models and security rules, validating inputs, and handling edge cases to reduce errors and protect user data.",
-                  "Prepared for launch by setting up build configurations (dev/prod), testing on Android and iOS, tracking key product metrics (activation, retention, logging frequency), and maintaining an MVP roadmap for iterative releases."
+                  "Developed a multimodal AI platform that combines text, music, images, links, and real-time data to generate personalized creative outputs.",
+                  "Built generation workflows for text-to-image, style transfer, and user-guided customization using PyTorch, Transformers, and Diffusers.",
+                  "Deployed publicly on Hugging Face Spaces; designed flexible input workflows where users guide AI-generated outputs using creative references."
                 ]}
               />
             </Section>

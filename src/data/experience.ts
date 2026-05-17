@@ -24,9 +24,9 @@ export const experiences: Experience[] = [
     organization: 'BeautyNBrushes',
     location: 'Toronto, ON',
     role: 'Product Manager Intern',
-    timeframe: 'Jan 2026 - Present',
+    timeframe: 'Jan 2026 – Apr 2026',
     stack: ['Jira', 'Figma', 'Notion', 'SQL', 'Analytics'],
-    tldr: 'Driving a full platform relaunch—owning the backlog, running QA, and making sure we ship features that actually work.',
+    tldr: 'Drove a full platform relaunch—owning the backlog, running QA, and making sure we ship features that actually work.',
     context: `BeautyNBrushes is a marketplace connecting beauty service providers with clients. When I joined, the team was gearing up for a major relaunch—rebuilding core flows from signup to payments. I came in as the PM intern responsible for keeping the backlog tight, making sure nothing ships broken, and understanding what competitors were doing better than us.`,
     whatIDid: [
       'Wrote and refined user stories with clear acceptance criteria for every flow—signup, profiles, booking, payments, and notifications. If it touched the user, I documented it.',
@@ -55,9 +55,9 @@ export const experiences: Experience[] = [
     organization: 'Google Developer Group on Campus',
     location: 'Toronto, ON',
     role: 'Marketing Lead',
-    timeframe: 'Jan 2026 - Present',
+    timeframe: 'Jan 2026 – Mar 2026',
     stack: ['Notion', 'Canva', 'Discord', 'Instagram', 'Google Analytics'],
-    tldr: 'Running marketing for a developer community—planning events, creating content, and figuring out what actually gets people to show up.',
+    tldr: 'Ran marketing for a developer community—planning events, creating content, and figuring out what actually gets people to show up.',
     context: `GDG on Campus is Google\'s official developer community for students. As Marketing Lead, I\'m responsible for getting people excited about our events and growing our community. It\'s part strategy, part execution, and a lot of figuring out what resonates with busy students.`,
     whatIDid: [
       'Plan and execute event campaigns end-to-end—from positioning and content creation to launch timing and community promotion. Every event needs a story.',

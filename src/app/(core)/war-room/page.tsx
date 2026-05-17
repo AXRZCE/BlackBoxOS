@@ -46,9 +46,9 @@ export default function WarRoomPage() {
       <section className="py-20 md:py-32 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-sans font-medium leading-tight tracking-tight max-w-5xl text-[#1d2433] dark:text-white">
-            I build systems that power real-time,{' '}
-            <span className="text-accent">AI-driven</span> decisions
-            in production environments—from neural interfaces to distributed databases.
+            I build{' '}
+            <span className="text-accent">AI-driven</span> systems
+            that ship — from autonomous infrastructure to prediction market calibration.
           </h1>
         </div>
       </section>
@@ -93,20 +93,20 @@ export default function WarRoomPage() {
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-16">
             <div className="space-y-2">
-              <p className="text-4xl md:text-6xl font-sans font-medium tracking-tight text-[#1d2433] dark:text-white">8ms</p>
-              <p className="text-sm text-[#1d2433]/40 dark:text-white/40">Average latency</p>
+              <p className="text-4xl md:text-6xl font-sans font-medium tracking-tight text-[#1d2433] dark:text-white">~30%</p>
+              <p className="text-sm text-[#1d2433]/40 dark:text-white/40">Faster review cycles</p>
             </div>
             <div className="space-y-2">
-              <p className="text-4xl md:text-6xl font-sans font-medium tracking-tight text-[#1d2433] dark:text-white">50K+</p>
-              <p className="text-sm text-[#1d2433]/40 dark:text-white/40">Users served</p>
+              <p className="text-4xl md:text-6xl font-sans font-medium tracking-tight text-[#1d2433] dark:text-white">4</p>
+              <p className="text-sm text-[#1d2433]/40 dark:text-white/40">International markets</p>
             </div>
             <div className="space-y-2">
-              <p className="text-4xl md:text-6xl font-sans font-medium tracking-tight text-[#1d2433] dark:text-white">99.7%</p>
-              <p className="text-sm text-[#1d2433]/40 dark:text-white/40">System uptime</p>
+              <p className="text-4xl md:text-6xl font-sans font-medium tracking-tight text-[#1d2433] dark:text-white">8+</p>
+              <p className="text-sm text-[#1d2433]/40 dark:text-white/40">Projects shipped</p>
             </div>
             <div className="space-y-2">
-              <p className="text-4xl md:text-6xl font-sans font-medium tracking-tight text-[#1d2433] dark:text-white">10x</p>
-              <p className="text-sm text-[#1d2433]/40 dark:text-white/40">Compression ratio</p>
+              <p className="text-4xl md:text-6xl font-sans font-medium tracking-tight text-[#1d2433] dark:text-white">22</p>
+              <p className="text-sm text-[#1d2433]/40 dark:text-white/40">Events resolved</p>
             </div>
           </div>
         </div>
@@ -135,7 +135,7 @@ export default function WarRoomPage() {
       {/* Footer - Minimal */}
       <footer className="py-8 px-6 md:px-12 border-t border-[#1d2433]/10 dark:border-white/10">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[#1d2433]/30 dark:text-white/30">
-          <span className="font-mono">© 2025 BLACKBOX_OS</span>
+          <span className="font-mono">© 2026 Aksharajsinh Parmar</span>
           <div className="flex items-center gap-6">
             <Link href="/vault" className="hover:text-[#1d2433] dark:hover:text-white transition-colors">
               3D Vault
