@@ -46,8 +46,8 @@ export default function WarRoomPage() {
       <section className="py-20 md:py-32 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-sans font-medium leading-tight tracking-tight max-w-5xl text-[#1d2433] dark:text-white">
-            I&apos;m an AI product builder who makes strange ideas useful, usually with{' '}
-            <span className="text-accent">data, systems,</span> and a suspicious amount of curiosity.
+            I&apos;m an AI product builder who makes strange ideas useful, usually with data, systems,
+            and a suspicious amount of <span className="text-accent">curiosity</span>.
           </h1>
         </div>
       </section>

@@ -193,7 +193,7 @@ export function PalantirCard({
                 isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
               }`}
             >
-              <span className="text-[#1d2433]/60 dark:text-white/60 text-lg">→ View Project</span>
+              <span className="text-[#1d2433]/60 dark:text-white/60 text-lg">→ View</span>
             </div>
           )}
         </div>

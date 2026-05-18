@@ -47,7 +47,7 @@ export function VaultGuide() {
       {isTargeting && !selectedProjectId && (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-24">
           <div className="px-4 py-2 bg-black/70 border border-zinc-800 backdrop-blur-sm font-mono text-xs text-zinc-400 uppercase tracking-wider animate-in fade-in duration-300">
-            <span className="text-accent">Click</span> to Open Case File
+            <span>Click</span> to Open Case File
           </div>
         </div>
       )}
