@@ -86,7 +86,7 @@ export function ContactPanel({ variant = 'inline', showPrimaryCta = true }: Cont
           <a
             href={`mailto:${CONTACT.email}`}
             onClick={handleEmailClick}
-            className="inline-block px-8 py-3 bg-accent text-background font-mono text-label uppercase tracking-wider hover:bg-accent/90 transition-colors"
+            className="inline-block px-8 py-3 bg-[#3b82f6] dark:bg-accent text-white dark:text-background font-mono text-label uppercase tracking-wider hover:bg-[#2563eb] dark:hover:bg-accent/90 transition-colors"
           >
             Get in Touch
           </a>
