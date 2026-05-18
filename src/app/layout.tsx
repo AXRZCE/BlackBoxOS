@@ -3,6 +3,7 @@ import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/shell/ThemeProvider";
 import { ModeProvider } from "@/components/shell/ModeProvider";
+import { Analytics } from "@vercel/analytics/next";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-heading",
@@ -35,6 +36,7 @@ export default function RootLayout({
         <ThemeProvider>
           <ModeProvider>{children}</ModeProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
