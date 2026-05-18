@@ -136,7 +136,6 @@ export function CaseFileSheet() {
 
           {/* Right column: Stats & Links */}
           <div className="space-y-5 lg:border-l lg:border-border/50 lg:pl-6">
-            <StatBlock label="ROLE" value={project.role} />
             <StatBlock label="TIMEFRAME" value={project.timeframe} />
 
             {/* M6: Metrics */}

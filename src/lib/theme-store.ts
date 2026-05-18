@@ -15,7 +15,7 @@ interface ThemeState {
 
 export const useThemeStore = create<ThemeState>((set, get) => ({
   theme: 'blackbox',
-  colorMode: 'dark',
+  colorMode: 'light',
   heistUnlocked: false,
 
   setTheme: (theme) => {

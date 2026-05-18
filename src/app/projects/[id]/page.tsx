@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return {
-    title: `${project.title} | BLACKBOX OS`,
+    title: `${project.title} | Akshar's Portfolio`,
     description: project.context,
     openGraph: {
       title: project.title,
@@ -68,7 +68,7 @@ export default async function ProjectPage({ params }: PageProps) {
           <Link href="/war-room" className="text-xs font-mono uppercase tracking-widest text-[#1d2433]/50 dark:text-white/50 hover:text-[#1d2433] dark:hover:text-white transition-colors">
             ← BACK TO WAR ROOM
           </Link>
-          <span className="text-xs font-mono uppercase tracking-widest text-[#1d2433]/30 dark:text-white/30">BLACKBOX OS</span>
+          <span className="text-xs font-mono uppercase tracking-widest text-[#1d2433]/30 dark:text-white/30">Akshar&apos;s Portfolio</span>
         </div>
       </header>
 
@@ -168,7 +168,6 @@ export default async function ProjectPage({ params }: PageProps) {
 
           {/* Right: Stats & Links */}
           <div className="space-y-6 md:border-l md:border-[#1d2433]/10 dark:md:border-white/10 md:pl-6">
-            <StatBlock label="ROLE" value={project.role} />
             <StatBlock label="TIMEFRAME" value={project.timeframe} />
 
             {/* M6: Metrics */}

@@ -31,12 +31,12 @@ export function setStoredTheme(theme: Theme): void {
  * Get the stored color mode from localStorage
  */
 export function getStoredColorMode(): ColorMode {
-  if (typeof window === 'undefined') return 'dark';
+  if (typeof window === 'undefined') return 'light';
   const stored = localStorage.getItem(COLOR_MODE_KEY);
   if (stored === 'light' || stored === 'dark' || stored === 'system') {
     return stored;
   }
-  return 'dark';
+  return 'light';
 }
 
 /**

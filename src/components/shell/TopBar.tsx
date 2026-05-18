@@ -13,7 +13,7 @@ export function TopBar() {
           <div className="w-1.5 h-1.5 rounded-full bg-[#1d2433]/20 dark:bg-white/20" />
         </div>
         <span className="text-[10px] uppercase tracking-widest font-mono text-[#1d2433]/70 dark:text-white/70">
-          BLACKBOX OS
+          Akshar&apos;s Portfolio
         </span>
       </div>
       <div className="flex items-center gap-4">

@@ -19,7 +19,6 @@ const CONTACT = {
 };
 
 export function ContactPanel({ variant = 'inline', showPrimaryCta = true }: ContactPanelProps) {
-  const [copied, setCopied] = useState(false);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   const handleEmailClick = useCallback(() => {
@@ -37,18 +36,6 @@ export function ContactPanel({ variant = 'inline', showPrimaryCta = true }: Cont
   const handleResumeClick = useCallback(() => {
     track({ type: 'contact_click', channel: 'resume' });
     setIsResumeOpen(true);
-  }, []);
-
-  const handleCopyEmail = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(CONTACT.email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-      track({ type: 'contact_click', channel: 'email' });
-    } catch {
-      // Fallback - open mailto
-      window.location.href = `mailto:${CONTACT.email}`;
-    }
   }, []);
 
   if (variant === 'compact') {
@@ -129,12 +116,6 @@ export function ContactPanel({ variant = 'inline', showPrimaryCta = true }: Cont
             className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
           >
             Resume
-          </button>
-          <button
-            onClick={handleCopyEmail}
-            className="text-micro uppercase tracking-wider text-foreground/50 hover:text-accent transition-colors font-mono"
-          >
-            {copied ? '✓ Copied' : 'Copy Email'}
           </button>
         </div>
       </div>

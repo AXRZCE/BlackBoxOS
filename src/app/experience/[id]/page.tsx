@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return {
-    title: `${exp.role} at ${exp.organization} | BLACKBOX OS`,
+    title: `${exp.role} at ${exp.organization} | Akshar's Portfolio`,
     description: exp.tldr,
   };
 }
@@ -43,7 +43,7 @@ export default async function ExperiencePage({ params }: PageProps) {
           <Link href="/war-room" className="text-xs font-mono uppercase tracking-widest text-[#1d2433]/50 dark:text-white/50 hover:text-[#1d2433] dark:hover:text-white transition-colors">
             ← BACK TO WAR ROOM
           </Link>
-          <span className="text-xs font-mono uppercase tracking-widest text-[#1d2433]/30 dark:text-white/30">BLACKBOX OS</span>
+          <span className="text-xs font-mono uppercase tracking-widest text-[#1d2433]/30 dark:text-white/30">Akshar&apos;s Portfolio</span>
         </div>
       </header>
 
@@ -117,7 +117,7 @@ export default async function ExperiencePage({ params }: PageProps) {
             {exp.funFact && (
               <Section title="FUN FACT">
                 <p className="text-sm leading-relaxed text-[#1d2433]/80 dark:text-white/80 italic">
-                  "{exp.funFact}"
+                  &quot;{exp.funFact}&quot;
                 </p>
               </Section>
             )}

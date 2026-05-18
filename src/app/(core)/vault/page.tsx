@@ -47,7 +47,7 @@ export default function VaultPage() {
       {/* Back navigation - fixed position */}
       <Link
         href="/war-room"
-        className="fixed top-14 left-4 z-50 inline-flex items-center gap-2 px-3 py-2 text-sm bg-white/90 dark:bg-black/90 border border-[#1d2433]/20 dark:border-white/20 text-[#1d2433]/70 dark:text-white/70 hover:text-[#1d2433] dark:hover:text-white hover:border-[#1d2433]/40 dark:hover:border-white/40 transition-colors backdrop-blur-sm"
+        className="fixed top-14 left-4 z-50 inline-flex items-center gap-2 px-4 py-2 text-sm font-mono uppercase tracking-widest bg-[#0b1220]/85 border border-cyan-300/50 text-white hover:bg-cyan-400/20 hover:border-cyan-200 transition-colors backdrop-blur-md"
       >
         <span>←</span>
         <span>Back</span>

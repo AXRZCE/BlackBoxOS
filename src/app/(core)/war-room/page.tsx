@@ -7,7 +7,7 @@ import { MissionTracker } from '@/components/shell/MissionTracker';
 import { PalantirCard } from '@/components/shell/PalantirCard';
 
 export const metadata: Metadata = {
-  title: 'War Room | BLACKBOX OS',
+  title: "War Room | Akshar's Portfolio",
   description: 'Tactical briefing: Work experience, proof of impact, and direct contact.',
 };
 
@@ -23,7 +23,7 @@ export default function WarRoomPage() {
       <header className="py-6 px-6 md:px-12 border-b border-[#1d2433]/10 dark:border-white/10">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/" className="font-mono text-sm text-[#1d2433]/60 dark:text-white/60 hover:text-[#1d2433] dark:hover:text-white transition-colors">
-            BLACKBOX<span className="text-accent">_</span>OS
+            Akshar&apos;s Portfolio
           </Link>
           <nav className="flex items-center gap-6">
             <Link href="/vault" className="text-sm text-[#1d2433]/50 dark:text-white/50 hover:text-[#1d2433] dark:hover:text-white transition-colors">
@@ -33,7 +33,7 @@ export default function WarRoomPage() {
               Labs
             </Link>
             <Link
-              href="#contact"
+              href="mailto:aksharaj.asp.15@gmail.com"
               className="text-sm px-4 py-2 border border-[#1d2433]/20 dark:border-white/20 hover:border-[#1d2433]/50 dark:hover:border-white/50 transition-colors"
             >
               Get in Touch
@@ -46,9 +46,8 @@ export default function WarRoomPage() {
       <section className="py-20 md:py-32 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-sans font-medium leading-tight tracking-tight max-w-5xl text-[#1d2433] dark:text-white">
-            I build{' '}
-            <span className="text-accent">AI-driven</span> systems
-            that ship — from autonomous infrastructure to prediction market calibration.
+            I&apos;m an AI product builder who makes strange ideas useful, usually with{' '}
+            <span className="text-accent">data, systems,</span> and a suspicious amount of curiosity.
           </h1>
         </div>
       </section>
@@ -122,7 +121,6 @@ export default function WarRoomPage() {
               </h2>
               <p className="text-[#1d2433]/50 dark:text-white/50 leading-relaxed max-w-md">
                 I&apos;m open to full-time roles, contract work, and interesting collaborations.
-                Currently based in Toronto, ON and available for remote work.
               </p>
             </div>
             <div className="flex flex-col justify-center">
@@ -137,6 +135,22 @@ export default function WarRoomPage() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[#1d2433]/30 dark:text-white/30">
           <span className="font-mono">© 2026 Aksharajsinh Parmar</span>
           <div className="flex items-center gap-6">
+            <a
+              href="https://github.com/AXRZCE"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#1d2433] dark:hover:text-white transition-colors"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://www.linkedin.com/in/aksharajsinh"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#1d2433] dark:hover:text-white transition-colors"
+            >
+              LinkedIn
+            </a>
             <Link href="/vault" className="hover:text-[#1d2433] dark:hover:text-white transition-colors">
               3D Vault
             </Link>

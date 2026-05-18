@@ -274,10 +274,10 @@ export function CommandPalette() {
           </CommandItem>
           <CommandItem onSelect={() => {
             track({ type: 'contact_click', channel: 'resume' });
-            window.open('/resume.pdf', '_blank');
+            window.open('/Aksharajsinh_Resume_Product.docx', '_blank');
             setOpen(false);
           }}>
-            <span>Open Resume PDF</span>
+            <span>Open Product / AI Resume</span>
           </CommandItem>
         </CommandGroup>
       </CommandList>

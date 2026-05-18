@@ -66,20 +66,12 @@ export default function LabsPage() {
       </Link>
 
       <header className="mb-4 relative flex-shrink-0">
-        {/* Experiment number badge */}
-        <div className="inline-flex items-center gap-2 mb-2 px-3 py-1 border border-[#1d2433]/10 dark:border-white/10 rounded-full">
-          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[#1d2433]/50 dark:text-white/50">
-            3 Active Experiments
-          </span>
-        </div>
-
         <h1 className="text-xl md:text-2xl font-light tracking-[0.2em] text-[#1d2433] dark:text-white mb-1 font-mono">
           {glitchText}
         </h1>
         <p className="text-xs text-[#1d2433]/60 dark:text-white/60 max-w-md leading-relaxed font-light">
           Interactive experiments and prototypes. Move your cursor, hold buttons,
-          adjust sliders — everything here responds to your input.
+          and adjust sliders. Everything here responds to your input.
         </p>
       </header>
 

@@ -130,7 +130,7 @@ function subscribeMount(callback: () => void): () => void {
 }
 
 export function MissionChecklist() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const checked = useSyncExternalStore(subscribeChecklist, getSnapshot, getServerSnapshot);
   const isMounted = useSyncExternalStore(subscribeMount, getMountSnapshot, getMountServerSnapshot);
 
